@@ -10,7 +10,7 @@ public class FileSort {
 
     public static void main(String[] args) throws IOException{
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        String path = reader.readLine();
+        String path = reader.readLine();                  // чтение пути до папки в которой будет происходить сортировка
 
         ArrayList<File> fileCopy = createDirectories(path);
         moveFiles(fileCopy,path);
@@ -21,7 +21,7 @@ public class FileSort {
         for (File file : list) {
             String typePath = path + "\\" + file.getName().replaceAll(".+\\.","") + "\\" + file.getName();
             System.out.println(typePath);
-            file.renameTo(new File(typePath));
+            file.renameTo(new File(typePath));     // перемещение файлов в папки с соответствующим название
         }
     }
 
