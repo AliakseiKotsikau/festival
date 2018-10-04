@@ -4,10 +4,10 @@ import java.util.Date;
 
 public class EventInfo  {
     private int maxPeople;
-    private Date date;
+    private String date;
     private String place;
     
-    public EventInfo(int maxPeople, Date date, String place) {
+    public EventInfo(int maxPeople, String date, String place) {
     	this.maxPeople = maxPeople;
     	this.date = date;
     	this.place = place;
@@ -17,7 +17,7 @@ public class EventInfo  {
     	return maxPeople;
     }
     
-    public Date getDate( ) {
+    public String getDate( ) {
     	return date;
     }
     
