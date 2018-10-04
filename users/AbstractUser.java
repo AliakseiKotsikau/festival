@@ -1,4 +1,4 @@
 package users;
 
-public class AbstractUser {
+public abstract class AbstractUser {
 }
