@@ -18,8 +18,6 @@ public class Login {
 	private Long user_id;
 	private String username;
 	private String password;
-
-	@OneToOne(fetch = FetchType.LAZY, mappedBy = "login", cascade = CascadeType.ALL)
 	private Participant participant;
 
 	@Enumerated(EnumType.STRING)
@@ -63,6 +61,7 @@ public class Login {
 		this.permission = permission;
 	}
 
+	@OneToOne(fetch = FetchType.LAZY, mappedBy = "login", cascade = CascadeType.ALL)
 	public Participant getParticipant() {
 		return participant;
 	}

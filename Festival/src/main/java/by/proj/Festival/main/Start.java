@@ -7,6 +7,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
 import by.proj.Festival.events.Festival;
+import by.proj.Festival.performers.Performer;
 
 public class Start {
 
@@ -24,8 +25,16 @@ public class Start {
 		obj.setPlace("Minsk, DreamLand");
 		obj.setSeating(1000);
 
+		Performer perf = new Performer();
+		perf.setName("Beer plant Krinica");
+
+		perf.addFest(obj);
+		obj.addPerformer(perf);
+
+		session.save(perf);
 		session.save(obj);
 		session.getTransaction().commit();
+		System.out.println("Done!");
 		session.close();
 
 	}

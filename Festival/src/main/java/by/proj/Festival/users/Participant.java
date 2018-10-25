@@ -28,12 +28,8 @@ public class Participant {
 	private String email;
 	private Integer age;
 
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_id")
 	private Login login;
 
-	@ManyToMany(cascade = CascadeType.ALL)
-	@JoinTable(name = "Festival_Participant", joinColumns = { @JoinColumn(name = "participant_id") }, inverseJoinColumns = { @JoinColumn(name = "festival_id") })
 	private Set<Festival> festivals = new HashSet<>();
 
 	@Id
@@ -41,6 +37,12 @@ public class Participant {
 	@Column(name = "participant_id")
 	public Long getParticipant_id() {
 		return participant_id;
+	}
+
+	public void addFest(Festival fest) {
+		if (fest == null)
+			throw new NullPointerException();
+		festivals.add(fest);
 	}
 
 	// Getters and setters
@@ -73,6 +75,9 @@ public class Participant {
 	}
 
 	public void setPhone(String phone) {
+		if (!phone.matches("(80|\\+375)-?\\d{2}[\\s-]?(\\d{1,3}[\\s-]?)+")) {
+			throw new IllegalArgumentException();
+		}
 		this.phone = phone;
 	}
 
@@ -82,9 +87,14 @@ public class Participant {
 	}
 
 	public void setEmail(String email) {
+		if (!email.matches("\\w+@\\w+\\.\\w{2,7}")) {
+			throw new IllegalArgumentException();
+		}
 		this.email = email;
 	}
 
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id")
 	public Login getLogin() {
 		return login;
 	}
@@ -101,6 +111,18 @@ public class Participant {
 	public void setAge(Integer age) {
 		this.age = age;
 	}
+
+	@ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable(name = "Festival_Participant", joinColumns = { @JoinColumn(name = "participant_id") }, inverseJoinColumns = { @JoinColumn(name = "festival_id") })
+	public Set<Festival> getFestivals() {
+		return festivals;
+	}
+
+	public void setFestivals(Set<Festival> festivals) {
+		this.festivals = festivals;
+	}
+
+	// equals and hashcode
 
 	@Override
 	public int hashCode() {

@@ -8,9 +8,12 @@
         <property name="hibernate.connection.username">student</property>
         <property name="hibernate.connection.password">student</property>
         <property name="hibernate.hbm2ddl.auto">update</property>
-        <property name="show_sql">false</property>
+        <property name="show_sql">true</property>
         <property name="hibernate.current_session_context_class">thread</property>
         <mapping class="by.proj.Festival.events.Festival"/>
+        <mapping class="by.proj.Festival.performers.Performer"/>
+        <mapping class="by.proj.Festival.users.Participant"/>
+        <mapping class="by.proj.Festival.users.Login"/>
         
     </session-factory>
 </hibernate-configuration>

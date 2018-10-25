@@ -26,11 +26,23 @@ public class Festival {
 	private String place;
 	private Integer seating;
 
-	@ManyToMany(mappedBy = "festivals")
 	private Set<Participant> participants = new HashSet<>();
 
-	@ManyToMany(mappedBy = "festivals_perf")
 	private Set<Performer> performers = new HashSet<>();
+
+	// Add participants and performers
+
+	public void addParticipant(Participant part) {
+		if (part == null)
+			throw new NullPointerException();
+		participants.add(part);
+	}
+
+	public void addPerformer(Performer perf) {
+		if (perf == null)
+			throw new NullPointerException();
+		performers.add(perf);
+	}
 
 	// Getters and setters
 
@@ -81,6 +93,26 @@ public class Festival {
 	public void setSeating(Integer seating) {
 		this.seating = seating;
 	}
+
+	@ManyToMany(mappedBy = "festivals")
+	public Set<Participant> getParticipants() {
+		return participants;
+	}
+
+	public void setParticipants(Set<Participant> participants) {
+		this.participants = participants;
+	}
+
+	@ManyToMany(mappedBy = "festivals_perf")
+	public Set<Performer> getPerformers() {
+		return performers;
+	}
+
+	public void setPerformers(Set<Performer> performers) {
+		this.performers = performers;
+	}
+
+	// equals and hashcode
 
 	@Override
 	public int hashCode() {

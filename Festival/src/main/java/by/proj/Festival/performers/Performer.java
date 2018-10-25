@@ -23,8 +23,14 @@ public class Performer {
 	private String name;
 
 	@ManyToMany(cascade = CascadeType.ALL)
-	@JoinTable(name = "Festival_Performer", joinColumns = { @JoinColumn(name = "performer_id") }, inverseJoinColumns = { @JoinColumn(name = "festival_id") })
+	@JoinTable(name = "festival_performer", joinColumns = { @JoinColumn(name = "performer_id") }, inverseJoinColumns = { @JoinColumn(name = "festival_id") })
 	private Set<Festival> festivals_perf = new HashSet<>();
+
+	public void addFest(Festival fest) {
+		if (fest == null)
+			throw new NullPointerException();
+		festivals_perf.add(fest);
+	}
 
 	// Getters and setters
 
@@ -47,6 +53,18 @@ public class Performer {
 	public void setName(String name) {
 		this.name = name;
 	}
+
+	@ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable(name = "festival_performer", joinColumns = { @JoinColumn(name = "performer_id") }, inverseJoinColumns = { @JoinColumn(name = "festival_id") })
+	public Set<Festival> getFestivals_perf() {
+		return festivals_perf;
+	}
+
+	public void setFestivals_perf(Set<Festival> festivals_perf) {
+		this.festivals_perf = festivals_perf;
+	}
+
+	// equals and hashcode
 
 	@Override
 	public int hashCode() {
