@@ -23,7 +23,7 @@ public class Performer {
 	private String name;
 
 	@ManyToMany(cascade = CascadeType.ALL)
-	@JoinTable(name = "Performer_Festival", joinColumns = { @JoinColumn(name = "performer_id") }, inverseJoinColumns = { @JoinColumn(name = "festival_id") })
+	@JoinTable(name = "Festival_Performer", joinColumns = { @JoinColumn(name = "performer_id") }, inverseJoinColumns = { @JoinColumn(name = "festival_id") })
 	private Set<Festival> festivals_perf = new HashSet<>();
 
 	// Getters and setters

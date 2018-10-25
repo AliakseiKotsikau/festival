@@ -26,13 +26,14 @@ public class Participant {
 	private String lastNmae;
 	private String phone;
 	private String email;
+	private Integer age;
 
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
 	private Login login;
 
 	@ManyToMany(cascade = CascadeType.ALL)
-	@JoinTable(name = "Participant_Festival", joinColumns = { @JoinColumn(name = "participant_id") }, inverseJoinColumns = { @JoinColumn(name = "festival_id") })
+	@JoinTable(name = "Festival_Participant", joinColumns = { @JoinColumn(name = "participant_id") }, inverseJoinColumns = { @JoinColumn(name = "festival_id") })
 	private Set<Festival> festivals = new HashSet<>();
 
 	@Id
@@ -90,6 +91,15 @@ public class Participant {
 
 	public void setLogin(Login login) {
 		this.login = login;
+	}
+
+	@Column(name = "age")
+	public Integer getAge() {
+		return age;
+	}
+
+	public void setAge(Integer age) {
+		this.age = age;
 	}
 
 	@Override

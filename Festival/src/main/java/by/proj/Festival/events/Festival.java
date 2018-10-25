@@ -11,6 +11,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import by.proj.Festival.performers.Performer;
 import by.proj.Festival.users.Participant;
@@ -53,6 +55,7 @@ public class Festival {
 	}
 
 	@Column(name = "date")
+	@Temporal(TemporalType.DATE)
 	public Date getDate() {
 		return date;
 	}
