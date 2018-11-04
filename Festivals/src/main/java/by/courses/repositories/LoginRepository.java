@@ -8,5 +8,4 @@ import by.courses.model.Login;
 @Repository
 public interface LoginRepository extends JpaRepository<Login, Long> {
 	Login findByUsername(String username);
-
 }
