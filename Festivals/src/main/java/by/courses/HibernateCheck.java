@@ -1,13 +1,12 @@
 package by.courses;
 
-import java.util.Date;
-
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
-import by.courses.model.Festival;
-import by.courses.model.Performer;
+import by.courses.model.Login;
+import by.courses.model.Participant;
+import by.courses.model.Role;
 
 public class HibernateCheck {
 
@@ -19,20 +18,27 @@ public class HibernateCheck {
 
 		session.beginTransaction();
 
-		Festival obj = new Festival();
-		obj.setName("Beer Festival");
-		obj.setDate(new Date());
-		obj.setPlace("Minsk, DreamLand");
-		obj.setSeating(1000);
+		Participant part = new Participant();
+		part.setFirstName("Ivan");
+		part.setLastNmae("Ivanov");
+		part.setAge(20);
+		part.setEmail("ivanivan@mail.ru");
+		part.setPhone("+375291234567");
 
-		Performer perf = new Performer();
-		perf.setName("Beer plant Krinica");
+		Login login = new Login();
+		login.setUsername("user");
+		login.setPassword("password");
 
-		perf.addFest(obj);
-		obj.addPerformer(perf);
+		Role role = new Role();
+		role.setRole("ROLE_USER");
 
-		session.save(perf);
-		session.save(obj);
+		login.getRoles().add(role);
+		part.setLogin(login);
+		role.getLogins().add(login);
+
+		session.save(role);
+		session.save(login);
+		session.save(part);
 		session.getTransaction().commit();
 		System.out.println("Done!");
 		session.close();
