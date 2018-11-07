@@ -7,35 +7,41 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import by.courses.model.Festival;
+import by.courses.model.Participant;
 import by.courses.repositories.FestivalRepository;
+import by.courses.repositories.ParticipantRepository;
+import by.courses.service.FestivalService;
 
 @Controller
 @RequestMapping("/festivals")
 public class FestivalController {
 
-	@Autowired
-	private FestivalRepository repository;
-
-	public FestivalController(FestivalRepository repository) {
+	
+	private FestivalService service;
+	
+	public FestivalController(FestivalService service) {
 		super();
-		this.repository = repository;
+		this.service = service;
 	}
 
-	@RequestMapping({"","/"})
+	@RequestMapping({ "", "/" })
 	public String getFestivals(Model model) {
-		model.addAttribute("festivals", repository.findAll());
+		model.addAttribute("festivals", service.getFestivals());
 		return "festivals";
 	}
-	
-	@RequestMapping(value="/{id}")
+
+	@RequestMapping(value = "/{id}")
 	public String getPerformers(@PathVariable() String id, Model model) {
-		Festival fest = repository.findById(Long.parseLong(id)).get();
+		Festival fest = service.getFestival(id);
 		model.addAttribute("festival", fest);
 		model.addAttribute("performers", fest.getPerformers());
-	
 		return "single-fest";
 	}
-	
-	
+
+	@RequestMapping(value = "/{id}/signup")
+	public String addParticipant(@PathVariable String id) {            //перенести в Service
+		service.addParticpipant(id);
+		return "festivals";
+	}
 
 }

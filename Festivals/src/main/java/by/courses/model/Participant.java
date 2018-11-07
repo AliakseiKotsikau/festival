@@ -20,13 +20,13 @@ import javax.persistence.Table;
 @Table(name = "Participant")
 public class Participant {
 	private Long participant_id;
+	private Long user_id;
 	private String firstName;
 	private String lastNmae;
 	private String phone;
 	private String email;
 	private Integer age;
-
-	private Login login;
+	
 
 	private Set<Festival> festivals = new HashSet<>();
 
@@ -91,16 +91,6 @@ public class Participant {
 		this.email = email;
 	}
 
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_id")
-	public Login getLogin() {
-		return login;
-	}
-
-	public void setLogin(Login login) {
-		this.login = login;
-	}
-
 	@Column(name = "age")
 	public Integer getAge() {
 		return age;
@@ -119,8 +109,20 @@ public class Participant {
 	public void setFestivals(Set<Festival> festivals) {
 		this.festivals = festivals;
 	}
+	
+	
+	@Column(name="user_id")
+	public Long getUser_id() {
+		return user_id;
+	}
 
+	public void setUser_id(Long user_id) {
+		this.user_id = user_id;
+	}
+	
+	
 	// equals and hashcode
+	
 
 	@Override
 	public int hashCode() {

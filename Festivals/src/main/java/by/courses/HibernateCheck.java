@@ -33,7 +33,6 @@ public class HibernateCheck {
 		role.setRole("ROLE_USER");
 
 		login.getRoles().add(role);
-		part.setLogin(login);
 		role.getLogins().add(login);
 
 		session.save(role);
