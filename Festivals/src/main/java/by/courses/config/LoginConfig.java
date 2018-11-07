@@ -25,7 +25,7 @@ public class LoginConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
  
-		http.authorizeRequests().antMatchers("/start", "/", "/festivals").permitAll()             //acsses to everybody
+		http.authorizeRequests().antMatchers("/start", "/", "/festivals/**/**","/css/**").permitAll()             //acsses to everybody
 		.antMatchers("/user/**").hasAnyRole("ROLE_USER")									   	  // users and admins
 		.antMatchers("/admin/**").hasAnyRole("ROLE_ADMIN")										  //only admins
 		.anyRequest().authenticated()

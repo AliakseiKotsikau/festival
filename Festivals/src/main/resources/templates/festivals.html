@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<title>Festivals</title>
+	<meta charset="UTF-8">
+	<title>Festivals</title>
+	 <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
 </head>
 <body>
 
@@ -23,10 +24,12 @@
 			<td th:text="${festival.name}"></td>
 			<td th:text="${festival.place}"></td>
 			<td th:text="${festival.date}"></td>
-			<td th:text="${festival.seating}"></td>
+			<td th:text="${festival.seating - festival.participants.size()}+'/'+ ${festival.seating}"></td>
 
 		</tr>
 	</table>
+	
+	
 
 </body>
 </html>
