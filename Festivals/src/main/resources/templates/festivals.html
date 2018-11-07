@@ -20,7 +20,7 @@
 			<th>Seating</th>
 		</tr>
 		<tr th:each="festival:${festivals}">
-			<td th:text="${festival.id}">123</td>
+			<td> <a th:text="${festival.id}" th:href="@{/festivals/{festid}(festid = ${festival.id})}">123 </a> </td>
 			<td th:text="${festival.name}"></td>
 			<td th:text="${festival.place}"></td>
 			<td th:text="${festival.date}"></td>

@@ -39,7 +39,7 @@ public class FestivalController {
 	}
 
 	@RequestMapping(value = "/{id}/signup")
-	public String addParticipant(@PathVariable String id) {            //перенести в Service
+	public String addParticipant(@PathVariable String id) {            
 		service.addParticpipant(id);
 		return "festivals";
 	}
