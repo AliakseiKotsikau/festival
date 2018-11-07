@@ -33,9 +33,14 @@ public class FestivalService {
 		return festRepository.findById(Long.parseLong(id)).get();
 	}
 
+	/**
+	 * add's logged user to Fest's perticipants
+	 * 
+	 * @param festId
+	 */
 	public void addParticpipant(String festId) {
 		Festival fest = festRepository.findById(Long.parseLong(festId)).get();
-		UserDetails userdetails = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		UserDetails userdetails = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();  
 		Login login = loginRepository.findByUsername(userdetails.getUsername());
 		Participant part = participantRepository.findByUser_id(login.getUser_id());
 		fest.getParticipants().add(part);
