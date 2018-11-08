@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>Festivals</title>
+	 <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+</head>
+<body>
+
+	<th:block th:include="/_menu"></th:block>
+
+	<h1 th:text="${festival.name} + ' (' + ${festival.date} +')'" ></h1>
+	
+	<ul>
+       <li th:each="perf : ${performers}" th:text="${perf.name}">Performer name</li>
+    </ul>
+    
+    <hr>
+    
+    <a th:if="${#request.userPrincipal == null} " th:href="@{/registartion}">Sing up</a>
+    
+    <a  th:if="${#request.userPrincipal != null}" th:href="@{/festivals/{festid}/signup(festid = ${festival.id})}">I'll go</a>
+
+</body>
+</html>
