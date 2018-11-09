@@ -1,5 +1,7 @@
 package by.courses.service;
 
+import java.util.ArrayList;
+
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -50,11 +52,15 @@ public class FestivalService {
 	}
 
 	public Iterable<Festival> getUsersFestivals() {
-		UserDetails userdetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		Login login = loginRepository.findByUsername(userdetails.getUsername());
-		Participant part = participantRepository.findByUser_id(login.getUser_id());
-
-		return part.getFestivals();
+		if (SecurityContextHolder.getContext().getAuthentication().isAuthenticated()) {
+			Object obj = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			if (obj instanceof UserDetails) {
+				UserDetails userdetails = (UserDetails) obj;
+				Login login = loginRepository.findByUsername(userdetails.getUsername());
+				Participant part = participantRepository.findByUser_id(login.getUser_id());
+				return part.getFestivals();
+			}
+		}
+		return new ArrayList<Festival>();
 	}
-
 }

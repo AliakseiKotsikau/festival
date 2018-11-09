@@ -9,15 +9,18 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
    
       <!-- Include _menu.html -->
       <th:block th:include="/_menu"></th:block>  
-       
-      <!-- <h3>Welcome : <span th:if="${#request.userPrincipal != null}" th:utext="${#request.userPrincipal.name}"></span></h3> -->
+   
+     <div th:if="${#request.userPrincipal != null}" th:utext="${userInfo}"></div>  
       
-      <h3><div th:if="${userInfo != null}" th:utext="${userInfo}"></div></h3>
+       <!-- <div th:text="${#authentication.name}">
+        The value of the "name" property of the authentication object should appear here.
+    </div> -->
       
       <ul>
        <li th:each="fest : ${festivals}" th:text="${fest.name} + ' (' + ${fest.date} +')'">Festival</li>
     </ul>
-    
+
+	<div th:if="${#request.userPrincipal == null}" > Hello, please <a th:href="@{/login}">login</a> </div>  
        
    </body>
 </html>

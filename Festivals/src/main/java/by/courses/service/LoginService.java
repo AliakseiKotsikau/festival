@@ -25,12 +25,20 @@ public class LoginService {
 	}
 
 	public String getUserInfo() {
-		UserDetails userdetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		Login login = loginRepository.findByUsername(userdetails.getUsername());
-		Participant part = participantRepository.findByUser_id(login.getUser_id());
-		String greeting = "Hello, " + part.getFirstName() + " (" + userdetails.getAuthorities().toString() + "), here is your festivals:";
+		if (SecurityContextHolder.getContext().getAuthentication().isAuthenticated()) {
+			Object obj = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			if (obj instanceof UserDetails) {
+				UserDetails userdetails = (UserDetails) obj;
+				Login login = loginRepository.findByUsername(userdetails.getUsername());
+				Participant part = participantRepository.findByUser_id(login.getUser_id());
+				String greeting = "Hello, " + part.getFirstName() + " (" + userdetails.getAuthorities().toString() + "), here is your festivals:";
+				return greeting;
+			} else
+				return obj.toString();
+		}
 
-		return greeting;
+		else
+			return "Hello. It's Festival app. Please login.";
 	}
 
 }
