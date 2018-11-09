@@ -1,5 +1,6 @@
 package by.courses.controllers;
 
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,6 +11,7 @@ import by.courses.service.FestivalService;
 
 @Controller
 @RequestMapping("/festivals")
+@Profile("thyme")
 public class FestivalController {
 
 	private FestivalService service;
@@ -20,7 +22,8 @@ public class FestivalController {
 	}
 
 	@RequestMapping({ "", "/" })
-	public String getFestivals() {
+	public String getFestivals(Model model) {
+		model.addAttribute("festivals", service.getFestivals());
 		return "festivals";
 	}
 

@@ -1,12 +1,14 @@
 package by.courses.controllers;
 
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
-import by.courses.model.Festival;
 import by.courses.service.FestivalService;
 
-@RestController
+@Controller
+@RequestMapping("/festivals")
+@Profile("rest")
 public class FestivalControllerRest {
 
 	private FestivalService service;
@@ -16,8 +18,9 @@ public class FestivalControllerRest {
 		this.service = service;
 	}
 
-	@RequestMapping("/festivals/get")
-	public Iterable<Festival> getFestivals() {
-		return service.getFestivals();
+	@RequestMapping({ "", "/" })
+	public String getFestivals() {
+		return "festivalsRest";
 	}
+
 }
