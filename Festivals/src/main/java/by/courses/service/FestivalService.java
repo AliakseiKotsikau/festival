@@ -40,13 +40,21 @@ public class FestivalService {
 	 */
 	public void addParticpipant(String festId) {
 		Festival fest = festRepository.findById(Long.parseLong(festId)).get();
-		UserDetails userdetails = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();  
+		UserDetails userdetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		Login login = loginRepository.findByUsername(userdetails.getUsername());
 		Participant part = participantRepository.findByUser_id(login.getUser_id());
 		fest.getParticipants().add(part);
 		part.getFestivals().add(fest);
 		festRepository.save(fest);
 		participantRepository.save(part);
+	}
+
+	public Iterable<Festival> getUsersFestivals() {
+		UserDetails userdetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Login login = loginRepository.findByUsername(userdetails.getUsername());
+		Participant part = participantRepository.findByUser_id(login.getUser_id());
+
+		return part.getFestivals();
 	}
 
 }

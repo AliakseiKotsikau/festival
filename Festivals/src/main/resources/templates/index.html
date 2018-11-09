@@ -1,5 +1,6 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
    <head>
       <title th:utext="${title}"></title>
    </head>
@@ -9,7 +10,14 @@
       <!-- Include _menu.html -->
       <th:block th:include="/_menu"></th:block>  
        
-      <h2>Message : <span th:utext="${message}"></span></h2>
+      <!-- <h3>Welcome : <span th:if="${#request.userPrincipal != null}" th:utext="${#request.userPrincipal.name}"></span></h3> -->
+      
+      <h3><div th:if="${userInfo != null}" th:utext="${userInfo}"></div></h3>
+      
+      <ul>
+       <li th:each="fest : ${festivals}" th:text="${fest.name} + ' (' + ${fest.date} +')'">Festival</li>
+    </ul>
+    
        
    </body>
 </html>

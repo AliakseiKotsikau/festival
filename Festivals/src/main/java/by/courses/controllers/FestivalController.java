@@ -36,8 +36,9 @@ public class FestivalController {
 	}
 
 	@RequestMapping(value = "/{id}/signup")
-	public String addParticipant(@PathVariable String id) {
+	public String addParticipant(@PathVariable String id, Model model) {
 		service.addParticpipant(id);
+		model.addAttribute("festivals", service.getFestivals());
 		return "festivals";
 	}
 
