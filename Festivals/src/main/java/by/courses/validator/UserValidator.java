@@ -1,6 +1,7 @@
 package by.courses.validator;
 
 import org.apache.commons.validator.routines.EmailValidator;
+import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
@@ -8,6 +9,7 @@ import org.springframework.validation.Validator;
 import by.courses.repositories.LoginRepository;
 import by.courses.repositories.ParticipantRepository;
 
+@Component
 public class UserValidator implements Validator {
 
 	private EmailValidator emailValidator = EmailValidator.getInstance();

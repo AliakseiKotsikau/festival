@@ -6,9 +6,12 @@ import org.springframework.stereotype.Service;
 
 import by.courses.model.Login;
 import by.courses.model.Participant;
+import by.courses.model.Role;
 import by.courses.repositories.FestivalRepository;
 import by.courses.repositories.LoginRepository;
 import by.courses.repositories.ParticipantRepository;
+import by.courses.repositories.RoleRepository;
+import by.courses.validator.AppUserForm;
 
 @Service
 public class LoginService {
@@ -16,12 +19,14 @@ public class LoginService {
 	private FestivalRepository festRepository;
 	private ParticipantRepository participantRepository;
 	private LoginRepository loginRepository;
+	private RoleRepository roleRepository;
 
-	public LoginService(FestivalRepository festRepository, ParticipantRepository participantRepository, LoginRepository loginRepository) {
+	public LoginService(FestivalRepository festRepository, ParticipantRepository participantRepository, LoginRepository loginRepository, RoleRepository roleRepository) {
 		super();
 		this.festRepository = festRepository;
 		this.participantRepository = participantRepository;
 		this.loginRepository = loginRepository;
+		this.roleRepository = roleRepository;
 	}
 
 	public String getUserInfo() {
@@ -41,8 +46,28 @@ public class LoginService {
 			return "Hello. It's Festival app. Please login.";
 	}
 
-//	public Participant createNewUser(AppUserForm form) {
-//
-//	}
+	public Participant createNewUser(AppUserForm form) {
+
+		// Get user Role
+		Role role = roleRepository.findByRole("ROLE_USER");
+
+		// Create new Login
+		Login login = new Login();
+		login.setUsername(form.getUserName());
+		login.setPassword(form.getPassword());
+		login.getRoles().add(role);
+
+		// Create participant
+		Participant part = new Participant();
+		part.setAge(form.getAge());
+		part.setEmail(form.getEmail());
+		part.setFirstName(form.getFirstName());
+		part.setLastName(form.getLastName());
+		part.setPhone(form.getPhone());
+
+		Login savedLogin = loginRepository.save(login);
+		part.setUser_id(savedLogin.getUser_id());
+		return participantRepository.save(part);
+	}
 
 }

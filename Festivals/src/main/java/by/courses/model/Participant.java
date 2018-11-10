@@ -70,9 +70,9 @@ public class Participant {
 	}
 
 	public void setPhone(String phone) {
-		if (!phone.matches("(80|\\+375)-?\\d{2}[\\s-]?(\\d{1,3}[\\s-]?)+")) {
-			throw new IllegalArgumentException();
-		}
+//		if (!phone.matches("(80|\\+375)-?\\d{2}[\\s-]?(\\d{1,3}[\\s-]?)+")) {
+//			throw new IllegalArgumentException();
+//		}
 		this.phone = phone;
 	}
 
@@ -82,9 +82,9 @@ public class Participant {
 	}
 
 	public void setEmail(String email) {
-		if (!email.matches("\\w+@\\w+\\.\\w{2,7}")) {
-			throw new IllegalArgumentException();
-		}
+//		if (!email.matches("\\w+@\\w+\\.\\w{2,7}")) {
+//			throw new IllegalArgumentException();
+//		}
 		this.email = email;
 	}
 
