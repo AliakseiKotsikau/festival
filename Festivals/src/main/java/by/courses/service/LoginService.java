@@ -41,4 +41,8 @@ public class LoginService {
 			return "Hello. It's Festival app. Please login.";
 	}
 
+//	public Participant createNewUser(AppUserForm form) {
+//
+//	}
+
 }

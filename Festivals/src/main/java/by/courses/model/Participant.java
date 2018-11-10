@@ -6,14 +6,12 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -22,11 +20,10 @@ public class Participant {
 	private Long participant_id;
 	private Long user_id;
 	private String firstName;
-	private String lastNmae;
+	private String lastName;
 	private String phone;
 	private String email;
 	private Integer age;
-	
 
 	private Set<Festival> festivals = new HashSet<>();
 
@@ -59,12 +56,12 @@ public class Participant {
 	}
 
 	@Column(name = "lastname")
-	public String getLastNmae() {
-		return lastNmae;
+	public String getLastName() {
+		return lastName;
 	}
 
-	public void setLastNmae(String lastNmae) {
-		this.lastNmae = lastNmae;
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 
 	@Column(name = "phone")
@@ -109,9 +106,8 @@ public class Participant {
 	public void setFestivals(Set<Festival> festivals) {
 		this.festivals = festivals;
 	}
-	
-	
-	@Column(name="user_id")
+
+	@Column(name = "user_id")
 	public Long getUser_id() {
 		return user_id;
 	}
@@ -119,10 +115,8 @@ public class Participant {
 	public void setUser_id(Long user_id) {
 		this.user_id = user_id;
 	}
-	
-	
+
 	// equals and hashcode
-	
 
 	@Override
 	public int hashCode() {

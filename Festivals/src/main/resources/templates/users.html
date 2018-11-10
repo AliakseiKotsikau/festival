@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>Festivals</title>
+	 <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+</head>
+<body>
+
+	<th:block th:include="/_menu"></th:block>
+
+	<h1>Festivals list</h1>
+
+	<table border="1">
+		<tr>
+			<th>ID</th>
+			<th>First name</th>
+			<th>Last name</th>
+			<th>Age</th>
+			<th>E-mail</th>
+			<th>Phone</th>
+			<th>User_id</th>
+		</tr>
+		<tr th:each="user:${users}">
+			<td> <a th:text="${user.participant_id}" >123 </a> </td>
+			<td th:text="${user.firstName}"></td>
+			<td th:text="${user.lastName}"></td>
+			<td th:text="${user.age}"></td>
+			<td th:text="${user.email}"></td>
+			<td th:text="${user.phone}"></td>
+			<td th:text="${user.user_id}"></td>
+
+		</tr>
+	</table>
+	
+	
+
+</body>
+</html>

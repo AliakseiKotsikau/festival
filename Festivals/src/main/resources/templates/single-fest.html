@@ -17,7 +17,7 @@
     
     <hr>
     
-    <a th:if="${#request.userPrincipal == null} " th:href="@{/registartion}">Sing up</a>
+    <a th:if="${#request.userPrincipal == null} " th:href="@{/registartion}">Sing in</a>
     
     <a  th:if="${#request.userPrincipal != null}" th:href="@{/festivals/{festid}/signup(festid = ${festival.id})}">I'll go</a>
 

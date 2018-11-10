@@ -20,7 +20,7 @@ public class HibernateCheck {
 
 		Participant part = new Participant();
 		part.setFirstName("Ivan");
-		part.setLastNmae("Ivanov");
+		part.setLastName("Ivanov");
 		part.setAge(20);
 		part.setEmail("ivanivan@mail.ru");
 		part.setPhone("+375291234567");
