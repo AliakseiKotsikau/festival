@@ -1,13 +1,17 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://thymeleaf.org">
 <head>
-	<meta charset="UTF-8">
-	<title>Festivals</title>
-	 <style>
-         th, td {
-         padding: 5px;
-         }
-     </style>
+<meta charset="UTF-8">
+<title>Festivals</title>
+<style>
+	th, td {
+		padding: 5px;
+	}
+
+	table tr td:last-child {
+		border: none;
+	}
+</style>
 </head>
 <body>
 
@@ -24,17 +28,22 @@
 			<th>Seating</th>
 		</tr>
 		<tr th:each="festival:${festivals}">
-			<td> <a th:text="${festival.id}" th:href="@{/festivals/{festid}(festid = ${festival.id})}">123 </a> </td>
+			<td><a th:text="${festival.id}"
+				th:href="@{/festivals/{festid}(festid = ${festival.id})}">123 </a></td>
 			<td th:text="${festival.name}"></td>
 			<td th:text="${festival.place}"></td>
 			<td th:text="${festival.date}"></td>
-			<td th:text="${festival.seating - festival.participants.size()}+'/'+ ${festival.seating}"></td>
+			<td
+				th:text="${festival.seating - festival.participants.size()}+'/'+ ${festival.seating}"></td>
+			<td><a
+				th:href="@{/festivals/{festid}/change(festid = ${festival.id})}">
+					Change </a></td>
 
 		</tr>
 	</table>
 	<br>
 	<a th:href="@{festivals/addfest}">Add festival</a>
-	
+
 
 </body>
 </html>

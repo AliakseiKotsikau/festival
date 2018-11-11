@@ -28,7 +28,7 @@ public class FestivalController {
 	@RequestMapping({ "", "/" })
 	public String getFestivals(Model model) {
 		model.addAttribute("festivals", service.getFestivals());
-		return "festivals";
+		return "festivals/festivals";
 	}
 
 	@RequestMapping(value = "/{id}")
@@ -36,21 +36,23 @@ public class FestivalController {
 		Festival fest = service.getFestival(id);
 		model.addAttribute("festival", fest);
 		model.addAttribute("performers", fest.getPerformers());
-		return "single-fest";
+		return "festivals/single-fest";
 	}
 
 	@RequestMapping(value = "/{id}/signup")
 	public String addParticipant(@PathVariable String id, Model model) {
 		service.addParticpipant(id);
 		model.addAttribute("festivals", service.getFestivals());
-		return "festivals";
+		return "festivals/festivals";
 	}
+
+	// Adding performers
 
 	@RequestMapping(value = "/{id}/addperf", method = RequestMethod.GET)
 	public String addPerformer(Model model) {
 		Performer perf = new Performer();
 		model.addAttribute("performer", perf);
-		return "addPerformer";
+		return "festivals/addPerformer";
 	}
 
 	@RequestMapping(value = "/{id}/addperf", method = RequestMethod.POST)
@@ -61,22 +63,22 @@ public class FestivalController {
 		} catch (Exception e) {
 			e.printStackTrace();
 			model.addAttribute("errorMessage", "Error: " + e.getMessage());
-			return "addPerformer";
+			return "festivals/addPerformer";
 		}
 
 		Festival fest = service.getFestival(id);
-//		model.addAttribute("festival", fest);
-//		model.addAttribute("performers", fest.getPerformers());
 		redirectAttributes.addFlashAttribute("festival", fest);
 		redirectAttributes.addFlashAttribute("performers", fest.getPerformers());
 		return "redirect:/festivals/{id}";
 	}
 
+	// Adding festivals
+
 	@RequestMapping(value = "/addfest", method = RequestMethod.GET)
 	public String addFestival(Model model) {
 		Festival fest = new Festival();
 		model.addAttribute("festival", fest);
-		return "addFestival";
+		return "festivals/addFestival";
 	}
 
 	@RequestMapping(value = "/addfest", method = RequestMethod.POST)
@@ -92,7 +94,33 @@ public class FestivalController {
 
 		model.addAttribute("festivals", service.getFestivals());
 
-		return "festivals";
+		return "festivals/festivals";
+	}
+
+	// Change festival info
+
+	@RequestMapping(value = "/{id}/change", method = RequestMethod.GET)
+	public String changeFestival(@PathVariable String id, Model model) {
+		Festival fest = service.getFestival(id);
+		model.addAttribute("festival", fest);
+
+		return "festivals/changeFestival";
+	}
+
+	@RequestMapping(value = "/{id}/change", method = RequestMethod.POST)
+	public String saveChanges(@PathVariable String id, Model model, @ModelAttribute("festival") Festival festival, final RedirectAttributes redirectAttributes) {
+		try {
+			service.saveNewFestival(festival);
+		} catch (Exception e) {
+			e.printStackTrace();
+			model.addAttribute("errorMessage", "Error: " + e.getMessage());
+			return "festivals/changeFestival";
+		}
+
+		redirectAttributes.addFlashAttribute("festivals", service.getFestivals());
+
+		return "redirect:/festivals";
+
 	}
 
 }
