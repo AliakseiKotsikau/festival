@@ -3,10 +3,13 @@ package by.courses.controllers;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import by.courses.model.Festival;
+import by.courses.model.Performer;
 import by.courses.service.FestivalService;
 
 @Controller
@@ -39,6 +42,42 @@ public class FestivalController {
 	public String addParticipant(@PathVariable String id, Model model) {
 		service.addParticpipant(id);
 		model.addAttribute("festivals", service.getFestivals());
+		return "festivals";
+	}
+
+	@RequestMapping(value = "/{id}/addperf", method = RequestMethod.GET)
+	public String addPerformer(Model model) {
+		Performer perf = new Performer();
+		model.addAttribute("performer", perf);
+		return "addPerformer";
+	}
+
+//	@RequestMapping(value = "/{id}/addperf" , method = RequestMethod.POST)
+//	public String savePerformer(Model model) {
+//		
+//		
+//	}
+
+	@RequestMapping(value = "/addfest", method = RequestMethod.GET)
+	public String addFestival(Model model) {
+		Festival fest = new Festival();
+		model.addAttribute("festival", fest);
+		return "addFestival";
+	}
+
+	@RequestMapping(value = "/addfest", method = RequestMethod.POST)
+	public String saveFestival(Model model, @ModelAttribute("festival") Festival festival) {
+
+		try {
+			service.saveNewFestival(festival);
+		} catch (Exception e) {
+			e.printStackTrace();
+			model.addAttribute("errorMessage", "Error: " + e.getMessage());
+			return "addFestival";
+		}
+
+		model.addAttribute("festivals", service.getFestivals());
+
 		return "festivals";
 	}
 

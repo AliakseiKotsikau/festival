@@ -3,7 +3,11 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Festivals</title>
-	 <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+	 <style>
+         th, td {
+         padding: 5px;
+         }
+     </style>
 </head>
 <body>
 
@@ -28,7 +32,8 @@
 
 		</tr>
 	</table>
-	
+	<br>
+	<a th:href="@{festivals/addfest}">Add festival</a>
 	
 
 </body>

@@ -36,6 +36,7 @@ public class MainController {
 		this.partRepository = partRepository;
 	}
 
+	// logout success
 	@RequestMapping(value = "/logoutSuccesful", method = RequestMethod.GET)
 	public String logout(Model model) {
 		model.addAttribute("title", "Logout");

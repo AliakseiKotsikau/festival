@@ -14,12 +14,15 @@
 	<ul>
        <li th:each="perf : ${performers}" th:text="${perf.name}">Performer name</li>
     </ul>
-    
+    <br>
+    <a th:href="@{/festivals/{festid}/addperf(festid = ${festival.id})}"> (Add performer) </a>
     <hr>
     
     <a th:if="${#request.userPrincipal == null} " th:href="@{/registartion}">Sing in</a>
     
     <a  th:if="${#request.userPrincipal != null}" th:href="@{/festivals/{festid}/signup(festid = ${festival.id})}">I'll go</a>
+    
+    
 
 </body>
 </html>

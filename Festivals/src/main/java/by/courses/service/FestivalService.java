@@ -63,4 +63,9 @@ public class FestivalService {
 		}
 		return new ArrayList<Festival>();
 	}
+
+	public Festival saveNewFestival(Festival fest) {
+
+		return festRepository.save(fest);
+	}
 }
