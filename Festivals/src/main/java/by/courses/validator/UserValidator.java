@@ -6,6 +6,8 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
+import by.courses.model.Login;
+import by.courses.model.Participant;
 import by.courses.repositories.LoginRepository;
 import by.courses.repositories.ParticipantRepository;
 
@@ -42,24 +44,24 @@ public class UserValidator implements Validator {
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "age", "NotEmpty.appUserForm.age");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "phone", "NotEmpty.appUserForm.phone");
 
-//		if (!this.emailValidator.isValid(appUserForm.getEmail())) {
-//			// Invalid email.
-//			errors.rejectValue("email", "Pattern.appUserForm.email");
-//		} else if (appUserForm.getUserId() == null) {
-//			Participant dbUser = partRepository.findByEmail(appUserForm.getEmail());
-//			if (dbUser != null) {
-//				// Email has been used by another account.
-//				errors.rejectValue("email", "Duplicate.appUserForm.email");
-//			}
-//		}
-//
-//		if (!errors.hasFieldErrors("userName")) {
-//			AppUser dbUser = appUserDAO.findAppUserByUserName(appUserForm.getUserName());
-//			if (dbUser != null) {
-//				// Username is not available.
-//				errors.rejectValue("userName", "Duplicate.appUserForm.userName");
-//			}
-//		}
+		if (!this.emailValidator.isValid(appUserForm.getEmail())) {
+			// Invalid email.
+			errors.rejectValue("email", "Pattern.appUserForm.email");
+		} else {
+			Participant dbUser = partRepository.findByEmail(appUserForm.getEmail());
+			if (dbUser != null) {
+				// Email has been used by another account.
+				errors.rejectValue("email", "Duplicate.appUserForm.email");
+			}
+		}
+
+		if (!errors.hasFieldErrors("userName")) {
+			Login dbUser = loginRepository.findByUsername(appUserForm.getUserName());
+			if (dbUser != null) {
+				// Username is not available.
+				errors.rejectValue("userName", "Duplicate.appUserForm.userName");
+			}
+		}
 
 	}
 
