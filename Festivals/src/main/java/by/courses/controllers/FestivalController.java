@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import by.courses.model.Festival;
 import by.courses.model.Performer;
@@ -52,11 +53,24 @@ public class FestivalController {
 		return "addPerformer";
 	}
 
-//	@RequestMapping(value = "/{id}/addperf" , method = RequestMethod.POST)
-//	public String savePerformer(Model model) {
-//		
-//		
-//	}
+	@RequestMapping(value = "/{id}/addperf", method = RequestMethod.POST)
+	public String savePerformer(@PathVariable String id, @ModelAttribute("performer") Performer performer, Model model, final RedirectAttributes redirectAttributes) {
+
+		try {
+			service.saveNewPerformer(id, performer);
+		} catch (Exception e) {
+			e.printStackTrace();
+			model.addAttribute("errorMessage", "Error: " + e.getMessage());
+			return "addPerformer";
+		}
+
+		Festival fest = service.getFestival(id);
+//		model.addAttribute("festival", fest);
+//		model.addAttribute("performers", fest.getPerformers());
+		redirectAttributes.addFlashAttribute("festival", fest);
+		redirectAttributes.addFlashAttribute("performers", fest.getPerformers());
+		return "redirect:/festivals/{id}";
+	}
 
 	@RequestMapping(value = "/addfest", method = RequestMethod.GET)
 	public String addFestival(Model model) {

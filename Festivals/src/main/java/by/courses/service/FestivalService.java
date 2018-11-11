@@ -9,9 +9,11 @@ import org.springframework.stereotype.Service;
 import by.courses.model.Festival;
 import by.courses.model.Login;
 import by.courses.model.Participant;
+import by.courses.model.Performer;
 import by.courses.repositories.FestivalRepository;
 import by.courses.repositories.LoginRepository;
 import by.courses.repositories.ParticipantRepository;
+import by.courses.repositories.PerformerRepository;
 
 @Service
 public class FestivalService {
@@ -19,12 +21,14 @@ public class FestivalService {
 	private FestivalRepository festRepository;
 	private ParticipantRepository participantRepository;
 	private LoginRepository loginRepository;
+	private PerformerRepository performerRepository;
 
-	public FestivalService(FestivalRepository festRepository, ParticipantRepository participantRepository, LoginRepository loginRepository) {
+	public FestivalService(FestivalRepository festRepository, ParticipantRepository participantRepository, LoginRepository loginRepository, PerformerRepository performerRepository) {
 		super();
 		this.festRepository = festRepository;
 		this.participantRepository = participantRepository;
 		this.loginRepository = loginRepository;
+		this.performerRepository = performerRepository;
 	}
 
 	public Iterable<Festival> getFestivals() {
@@ -64,8 +68,17 @@ public class FestivalService {
 		return new ArrayList<Festival>();
 	}
 
-	public Festival saveNewFestival(Festival fest) {
+	public void saveNewPerformer(String festId, Performer perf) {
+		Festival fest = festRepository.findById(Long.parseLong(festId)).get();
+		fest.getPerformers().add(perf);
+		perf.getFestivals_perf().add(fest);
+		festRepository.save(fest);
+		performerRepository.save(perf);
 
+	}
+
+	public Festival saveNewFestival(Festival fest) {
 		return festRepository.save(fest);
 	}
+
 }
