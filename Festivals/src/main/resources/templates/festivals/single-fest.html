@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://thymeleaf.org">
+<html lang="en" xmlns:th="http://thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 	<meta charset="UTF-8">
 	<title>Festivals</title>
@@ -15,7 +15,9 @@
        <li th:each="perf : ${performers}" th:text="${perf.name}">Performer name</li>
     </ul>
     <br>
-    <a th:href="@{/festivals/{festid}/addperf(festid = ${festival.id})}"> (Add performer) </a>
+    	<div th:if="${#request.userPrincipal != null and #strings.contains(#request.userPrincipal.authorities,'ADMIN')}">
+    		<a  th:href="@{/festivals/{festid}/addperf(festid = ${festival.id})}"> (Add performer) </a>
+    	</div>
     <hr>
     
     <a th:if="${#request.userPrincipal == null} " th:href="@{/registartion}">Sing in</a>

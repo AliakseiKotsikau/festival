@@ -35,14 +35,18 @@
 			<td th:text="${festival.date}"></td>
 			<td
 				th:text="${festival.seating - festival.participants.size()}+'/'+ ${festival.seating}"></td>
-			<td><a
-				th:href="@{/festivals/{festid}/change(festid = ${festival.id})}">
-					Change </a></td>
+			<td>
+				<div th:if="${#request.userPrincipal != null and #strings.contains(#request.userPrincipal.authorities,'ADMIN')}">
+					<a th:href="@{/festivals/{festid}/change(festid = ${festival.id})}">Change </a>
+				</div>
+			</td>
 
 		</tr>
 	</table>
 	<br>
-	<a th:href="@{festivals/addfest}">Add festival</a>
+	<div th:if="${#request.userPrincipal != null and #strings.contains(#request.userPrincipal.authorities,'ADMIN')}">
+		<a th:href="@{festivals/addfest}">Add festival</a>
+		</div>
 
 
 </body>

@@ -9,7 +9,7 @@
 
 	<th:block th:include="/_menu"></th:block>
 
-	<h1>Festivals list</h1>
+	<h1>Users list</h1>
 
 	<table border="1">
 		<tr>
@@ -29,8 +29,11 @@
 			<td th:text="${user.email}"></td>
 			<td th:text="${user.phone}"></td>
 			<td th:text="${user.user_id}"></td>
-
+			<td>
+				<a th:href="@{/users/{userid}/makeadmin(userid = ${user.participant_id})}">Make admin </a>
+			</td>
 		</tr>
+		
 	</table>
 	
 	

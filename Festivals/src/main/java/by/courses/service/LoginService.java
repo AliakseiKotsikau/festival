@@ -70,4 +70,14 @@ public class LoginService {
 		return participantRepository.save(part);
 	}
 
+	public void makeAdmin(String id) {
+		Participant part = participantRepository.findById(Long.parseLong(id)).get();
+		Login login = loginRepository.findById(part.getUser_id()).get();
+		Role role = roleRepository.findByRole("ROLE_ADMIN");
+		login.getRoles().add(role);
+
+		loginRepository.save(login);
+
+	}
+
 }

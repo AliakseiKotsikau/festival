@@ -8,6 +8,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -40,7 +41,7 @@ public class MainController {
 	@RequestMapping(value = "/logoutSuccesful", method = RequestMethod.GET)
 	public String logout(Model model) {
 		model.addAttribute("title", "Logout");
-		return "login";
+		return "authorization/login";
 	}
 
 	@RequestMapping({ "/start", "", "/" })
@@ -75,7 +76,7 @@ public class MainController {
 	@RequestMapping("/registerSuccessful")
 	public String viewRegisterSuccessful(Model model) {
 
-		return "registerSuccessful";
+		return "authorization/registerSuccessful";
 	}
 
 	@RequestMapping(value = "/register", method = RequestMethod.GET)
@@ -83,7 +84,7 @@ public class MainController {
 
 		AppUserForm form = new AppUserForm();
 		model.addAttribute("appUserForm", form);
-		return "register";
+		return "authorization/register";
 	}
 
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
@@ -92,7 +93,7 @@ public class MainController {
 
 		// Validate result
 		if (result.hasErrors()) {
-			return "register";
+			return "authorization/register";
 		}
 		Participant newUser = null;
 		try {
@@ -102,12 +103,19 @@ public class MainController {
 		catch (Exception e) {
 			e.printStackTrace();
 			model.addAttribute("errorMessage", "Error: " + e.getMessage());
-			return "register";
+			return "authorization/register";
 		}
 
 		redirectAttributes.addFlashAttribute("flashUser", newUser);
 
 		return "redirect:/registerSuccessful";
+	}
+
+	@RequestMapping(value = "users/{id}/makeadmin", method = RequestMethod.GET)
+	public String changeFestival(@PathVariable String id, Model model) {
+		loginService.makeAdmin(id);
+		model.addAttribute("users", partRepository.findAll());
+		return "/users";
 	}
 
 }
