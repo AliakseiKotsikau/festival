@@ -112,7 +112,7 @@ public class MainController {
 	}
 
 	@RequestMapping(value = "users/{id}/makeadmin", method = RequestMethod.GET)
-	public String changeFestival(@PathVariable String id, Model model) {
+	public String userToAdmin(@PathVariable String id, Model model) {
 		loginService.makeAdmin(id);
 		model.addAttribute("users", partRepository.findAll());
 		return "/users";
