@@ -27,6 +27,37 @@ th {
 	<th:block th:include="/_menu"></th:block>
 
 	<h1>Festivals list</h1>
+	
+	<table style="width: 40%">
+     <thead>
+          <tr>
+               <th>Id</th>
+               <th>Name</th>
+               <th>Category</th>
+               <th>Color</th>
+           </tr>
+     </thead>
+     <tbody id="tbody">
+     </tbody>
+</table>
+
+<script type="text/javascript">
+$.getJSON('/data/festivals', function(data){
+	$.each(data, function (index, item) {
+	for(var i=0;i<data.length;i++) 
+		{
+     var eachrow = "<tr>"
+                 + "<td>" + data[i].id + "</td>"
+                 + "<td>" + item[2] + "</td>"
+                 + "<td>" + item[3] + "</td>"
+                 + "<td>" + item[4] + "</td>"
+                 + "</tr>";
+     $('#tbody').append(eachrow);
+	}
+	});
+});
+
+</script>
 
  <script type="text/javascript">
  
@@ -74,7 +105,7 @@ function addAllColumnHeaders(arr, table)
   return columnSet;
 }
 
-$.getJSON('/festivals/get', function(data){
+$.getJSON('/data/festivals', function(data){
 	 document.body.appendChild(buildHtmlTable(data));
 	 });
 	</script>

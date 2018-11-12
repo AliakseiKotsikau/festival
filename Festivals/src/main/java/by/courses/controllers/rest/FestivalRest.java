@@ -8,7 +8,7 @@ import by.courses.model.Festival;
 import by.courses.service.FestivalService;
 
 @RestController
-@RequestMapping("/festivals")
+@RequestMapping("/data")
 @Profile("rest")
 public class FestivalRest {
 
@@ -19,7 +19,7 @@ public class FestivalRest {
 		this.service = service;
 	}
 
-	@RequestMapping("/get")
+	@RequestMapping("/festivals")
 	public Iterable<Festival> getFestivalsData() {
 		return service.getFestivals();
 	}

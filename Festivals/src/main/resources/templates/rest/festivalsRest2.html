@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+
+	<style>
+	th, td {
+		padding: 5px;
+	}
+
+	/* table tr td:last-child {
+		border: none;
+	} */
+</style>
+
+  <script>
+    $(function() {
+      
+      var result = [];
+      $.getJSON('/data/festivals', function(data){
+        $.each(data, function(i, f) {
+        	var formatted = $.datepicker.formatDate("yy-mm-dd", new Date(f.date));
+          var tblRow = "<tr>" + "<td>" + f.name + "</td>" + "<td>" + f.place + "</td>" + "<td>" + formatted + "</td>" + "<td>"  + "/" + f.seating + "</td>" + "</tr>"
+          $(tblRow).appendTo("#resultdata tbody");
+        });
+
+      });
+
+    });
+  </script>
+</head>
+
+<body>
+
+	<th:block th:include="/_menu"></th:block>
+
+	<h1>Festivals list</h1>
+
+      <table id="resultdata" border="1">
+        <thead>
+          <th>Name</th>
+          <th>Place</th>
+          <th>Date</th>
+          <th>Seating</th>
+        </thead>
+        <tbody>
+
+        </tbody>
+      </table>
+      
+
+</body>
+</html>

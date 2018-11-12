@@ -20,7 +20,7 @@ public class FestivalControllerRest {
 
 	@RequestMapping({ "", "/" })
 	public String getFestivals() {
-		return "festivalsRest";
+		return "rest/festivalsRest2";
 	}
 
 }
