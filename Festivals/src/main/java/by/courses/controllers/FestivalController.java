@@ -82,7 +82,7 @@ public class FestivalController {
 	}
 
 	@RequestMapping(value = "/addfest", method = RequestMethod.POST)
-	public String saveFestival(Model model, @ModelAttribute("festival") Festival festival) {
+	public String saveFestival(Model model, @ModelAttribute("festival") Festival festival, final RedirectAttributes redirectAttributes) {
 
 		try {
 			service.saveNewFestival(festival);
@@ -92,9 +92,9 @@ public class FestivalController {
 			return "addFestival";
 		}
 
-		model.addAttribute("festivals", service.getFestivals());
+		redirectAttributes.addFlashAttribute("festivals", service.getFestivals());
 
-		return "festivals/festivals";
+		return "redirect:/festivals";
 	}
 
 	// Change festival info

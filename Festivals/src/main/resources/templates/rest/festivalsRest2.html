@@ -20,8 +20,12 @@
       var result = [];
       $.getJSON('/data/festivals', function(data){
         $.each(data, function(i, f) {
+        	var id= f.id;
         	var formatted = $.datepicker.formatDate("yy-mm-dd", new Date(f.date));
-          var tblRow = "<tr>" + "<td>" + f.name + "</td>" + "<td>" + f.place + "</td>" + "<td>" + formatted + "</td>" + "<td>"  + "/" + f.seating + "</td>" + "</tr>"
+          var tblRow = "<tr>" + "<td>" +"<a href=/festivals/" + id + ">" +  f.name +"</a>" +  "</td>" 
+          + "<td>" + f.place + "</td>" + "<td>" + formatted + "</td>" 
+          + "<td>" + f.participants + "/" + f.seating + "</td>" + "</tr>"
+          
           $(tblRow).appendTo("#resultdata tbody");
         });
 

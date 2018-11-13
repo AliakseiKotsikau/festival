@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<meta charset="UTF-8">
+	<title>Festival</title>
+	 </head>
+<body>
+
+	<th:block th:include="/_menu"></th:block>
+	
+	<h1>Hello </h1>
+	
+	<script type="text/javascript">
+	$.getJSON('/data/festivals/${id}', function(data){
+		$('.note h1:first-child').append(data.name);
+	});
+	</script>
+
+
+	<!-- получить спикок исполнителей или фестиваль но ид -->
+	
+</body>
+</html>
