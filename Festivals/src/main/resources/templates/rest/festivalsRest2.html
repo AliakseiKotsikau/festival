@@ -4,14 +4,21 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
   <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
 
+
 	<style>
 	th, td {
 		padding: 5px;
 	}
-
+	
+	.performers {
+  	float: right;
+  	width: 30%;
+	}
 	/* table tr td:last-child {
 		border: none;
 	} */
+	
+	
 </style>
 
   <script>
@@ -35,7 +42,69 @@
     
   </script>
   
+  
+  <script type="text/javascript">
+      $(function() {
+    	   
+      	$.getJSON('/data/festivals', function(data){
+      		$.each(data,function(index, item) {
+      			var litem = "<li>" + item.name + "</li>"
+      	
+         	 	$(litem).appendTo("#menu");
+      		});
+      	
+      	});
+      
+      });
+  </script>
+  
+  <!-- Finds permitted actions for user and hide or show button -->
+  
+  <script type="text/javascript">
+     
+      function findAction() {
+    	  var neededRole = "Deafult_ROLE";
+        	$.getJSON('/data/rolesinfo', function(data){
+        		$.each(data,function(index, item) {
+        			if(item.actions.includes("change")) {
+        				neededRole = item.role.role; 
+        				console.log(neededRole);
+        				showButton(neededRole);
+        			}
+        			    
+        		});
+        	
+        	});
+        
+        }
+      
+      function showButton(role){
+    	  document.getElementById('addfest').style.visibility = 'hidden';
+    	  $.getJSON('/data/userroles', function(data){
+    		  if (data != null) {
+    		  	$.each(data,function(index, item) {
+    	  			if(item.role == role) {
+						document.getElementById('addfest').style.visibility = 'visible';
+						console.log("show Button");
+						return;
+					}
+    	  
+    		  	});
+    		 }
+    		  
+    		  else document.getElementById('addfest').style.visibility = 'hidden';
+    		  
+    	  });
+      }
+            
+      findAction();
+      
+  </script>
+
+
 </head>
+
+
 
 <body>
 
@@ -43,6 +112,8 @@
 
 	<h1>Festivals list</h1>
 
+<article>
+	<section>
       <table id="resultdata" border="1">
         <thead>
           <th>Name</th>
@@ -55,22 +126,24 @@
         </tbody>
         
       </table>
-      <br>
+      </section>
       
-      <button onclick="myFunction()">Add Festival</button>
-      <button onClick="javascript:window.location.href='/festivals/addfest'">Add festival</button>
+      <section class="performers">
+      
+      		<ul id="menu">
+      
+      		</ul>
+      
+      	</section>
+      
+	</article>
+      
+      <br>
+  
+      <button onClick="javascript:window.location.href='/festivals/addfest'"  id="addfest" >Add festival</button>
+      
+   
 
-	<script>
-		function myFunction() {
-    		var btn = document.createElement("BUTTON");
-    		
-    		button.addEventListener ("click", function() {
-    			  alert("did something");
-    			});
-    		
-    		document.body.appendChild(btn);
-		}
-	</script>
       
 </body>
 

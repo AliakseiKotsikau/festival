@@ -14,6 +14,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "Login")
 public class Login {
@@ -21,6 +23,7 @@ public class Login {
 	private String username;
 	private String password;
 
+	@JsonIgnore
 	private Set<Role> roles = new HashSet<>();
 
 	@Id

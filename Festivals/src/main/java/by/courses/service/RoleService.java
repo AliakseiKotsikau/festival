@@ -34,8 +34,8 @@ public class RoleService {
 
 		Role user = roleRepository.findByRole("ROLE_USER");
 		RoleInfo userInfo = new RoleInfo();
-		adminInfo.setRole(user);
-		adminInfo.getActions().add("signup");
+		userInfo.setRole(user);
+		userInfo.getActions().add("signup");
 		actions.add(userInfo);
 
 		return actions;

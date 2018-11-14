@@ -8,8 +8,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import by.courses.model.Festival;
+import by.courses.model.Role;
 import by.courses.model.RoleInfo;
 import by.courses.service.FestivalService;
+import by.courses.service.LoginService;
 import by.courses.service.RoleService;
 
 @RestController
@@ -19,13 +21,16 @@ public class FestivalRest {
 
 	private FestivalService service;
 	private RoleService roleService;
+	private LoginService loginService;
 
-	public FestivalRest(FestivalService service, RoleService roleService) {
+	public FestivalRest(FestivalService service, RoleService roleService, LoginService loginService) {
 		super();
 		this.service = service;
 		this.roleService = roleService;
+		this.loginService = loginService;
 	}
 
+	// list of festivals
 	@RequestMapping("/festivals")
 	public Iterable<Festival> getFestivalsData() {
 		return service.getFestivals();
@@ -36,9 +41,15 @@ public class FestivalRest {
 		return service.getFestival(id);
 	}
 
-	@RequestMapping("/roles")
+	// role's permissions
+	@RequestMapping("/rolesinfo")
 	public Set<RoleInfo> getActions() {
 		return roleService.setActions();
+	}
+
+	@RequestMapping("/userroles")
+	public Set<Role> getCurrentUser() {
+		return loginService.getCurentUserRoles();
 	}
 
 }
