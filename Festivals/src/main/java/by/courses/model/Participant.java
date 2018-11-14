@@ -14,6 +14,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "Participant")
 public class Participant {
@@ -25,6 +27,7 @@ public class Participant {
 	private String email;
 	private Integer age;
 
+	@JsonIgnore
 	private Set<Festival> festivals = new HashSet<>();
 
 	@Id

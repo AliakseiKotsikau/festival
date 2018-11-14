@@ -12,7 +12,7 @@
 	
 	.performers {
   	float: right;
-  	width: 30%;
+  	width: 70%;
 	}
 	/* table tr td:last-child {
 		border: none;
@@ -31,13 +31,11 @@
         	var formatted = $.datepicker.formatDate("yy-mm-dd", new Date(f.date));
           var tblRow = "<tr>" + "<td>" +"<a href=/festivals/" + id + ">" +  f.name +"</a>" +  "</td>" 
           + "<td>" + f.place + "</td>" + "<td>" + formatted + "</td>" 
-          + "<td>" + f.participants + "/" + f.seating + "</td>" + "</tr>"
+          + "<td>" + (f.seating - f.participants.length) + "/" + f.seating + "</td>" + "</tr>"
           
           $(tblRow).appendTo("#resultdata tbody");
         });
-
       });
-
     });
     
   </script>

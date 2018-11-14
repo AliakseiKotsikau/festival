@@ -27,7 +27,6 @@ public class Festival {
 	private String place;
 	private Integer seating;
 
-	@JsonIgnore
 	private Set<Participant> participants = new HashSet<>();
 
 	@JsonIgnore
