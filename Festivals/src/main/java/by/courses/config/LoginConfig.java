@@ -25,7 +25,7 @@ public class LoginConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 
-		http.authorizeRequests().antMatchers("/start", "/", "/festivals", "/css/**", "/register", "/data/**").permitAll() // acsses to everybody
+		http.authorizeRequests().antMatchers("/start", "/", "/festivals", "/css/**", "/register", "/data/**", "/registerSuccessful").permitAll() // acsses to everybody
 				.antMatchers("/festivals/\\d+", "/festivals/\\d+/signup").hasAnyRole("ROLE_USER", "ROLE_ADMIN") // users and admins
 				.antMatchers("/festivals/addfest", "/festivals/*/addperf", "/festivals/*/change").hasAnyRole("ADMIN") // only admins
 				.anyRequest().authenticated().and().formLogin().loginPage("/login").defaultSuccessUrl("/festivals").permitAll().and().logout().and().csrf().disable();

@@ -4,26 +4,69 @@
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
 <title>Login</title>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
+
+<style type="text/css">
+	.login-form {
+		width: 340px;
+    	margin: 50px auto;
+
+	}
+    .login-form form {
+    	margin-bottom: 15px;
+        background: #f7f7f7;
+        box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+        padding: 30px;
+    }
+    .login-form h2 {
+        margin: 0 0 15px;
+    }
+    
+    table {
+	border-spacing:5em;
+	
+	}
+	
+	.buttonHolder{ 
+	text-align: center; 
+	margin-left: 40px;
+	margin-top: 15px;
+	}
+</style>
+
 </head>
 <body>
 	<th:block th:include="/_menu"></th:block>
-	<div th:if="${param.error}">Invalid username and password.</div>
+	<div th:if="${param.error}" style="color:red">Invalid username and password.</div>
+
+	<div class="login-form">
 	<form th:action="@{/login}" method="post">
-	<h2>Login</h2>
+	<h2 class="text-center">Login</h2>
 		<table>
-        <tr>
+        <tr >
             <td>User:</td>
-            <td><input type="text" name="username" value=""></td>
+            <td><input type="text"  name="username" value=""></td>
         </tr>
-        <tr>
+        <tr >
             <td>Password:</td>
             <td><input type="password" name="password" /></td>
         </tr>
         <tr>
-            <td><input name="submit" type="submit" value="Sign in" /></td>
-            <td align="right"><a th:href="@{/register}">Sing up</a></td>
+            <td colspan="2">
+            <div class="buttonHolder">
+            <input name="submit" type="submit"  value="Sign in" />
+            </div>
+            </td>
         </tr>
     </table>
 	</form>
+	<p class="text-center"><a href="/register">Create an Account</a></p> 
+	
+	</div>
+    
+
 </body>
 </html>

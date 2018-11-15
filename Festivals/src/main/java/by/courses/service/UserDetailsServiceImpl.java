@@ -30,7 +30,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	}
 
 	@Override
-	@Transactional  // to avoid EXC
+	@Transactional // to avoid EXC
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		Login login = loginRepository.findByUsername(username);
 

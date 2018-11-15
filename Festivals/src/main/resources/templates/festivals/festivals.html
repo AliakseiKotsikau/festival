@@ -3,13 +3,24 @@
 <head>
 <meta charset="UTF-8">
 <title>Festivals</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <style>
 	th, td {
 		padding: 5px;
 	}
+	
+	tr, td {
+    border: 2px solid black;;
+	}
 
 	table tr td:last-child {
 		border: none;
+	}
+	
+	table {
+	border: none;
 	}
 </style>
 </head>
@@ -32,7 +43,7 @@
 			<td th:text="${festival.date}"></td>
 			<td
 				th:text="${festival.seating - festival.participants.size()}+'/'+ ${festival.seating}"></td>
-			<td>
+			<td class="noBorder">
 				<div th:if="${#request.userPrincipal != null and #strings.contains(#request.userPrincipal.authorities,'ADMIN')}">
 					<a th:href="@{/festivals/{festid}/change(festid = ${festival.id})}">Change </a>
 				</div>
