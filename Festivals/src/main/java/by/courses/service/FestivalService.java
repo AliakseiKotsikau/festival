@@ -81,4 +81,19 @@ public class FestivalService {
 		return festRepository.save(fest);
 	}
 
+	public void deleteFestival(String festId) {
+		Festival fest = festRepository.findById(Long.parseLong(festId)).get();
+		for (Performer perf : performerRepository.findAll()) {
+			perf.getFestivals_perf().remove(fest);
+			performerRepository.save(perf);
+		}
+
+		for (Participant part : participantRepository.findAll()) {
+			part.getFestivals().remove(fest);
+			participantRepository.save(part);
+		}
+
+		festRepository.deleteById(Long.parseLong(festId));
+	}
+
 }

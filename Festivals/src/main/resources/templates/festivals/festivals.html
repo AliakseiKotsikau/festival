@@ -21,16 +21,13 @@
 
 	<table border="1">
 		<tr>
-			<th>ID</th>
 			<th>Name</th>
 			<th>Place</th>
 			<th>Date</th>
 			<th>Seating</th>
 		</tr>
 		<tr th:each="festival:${festivals}">
-			<td><a th:text="${festival.id}"
-				th:href="@{/festivals/{festid}(festid = ${festival.id})}">123 </a></td>
-			<td th:text="${festival.name}"></td>
+			<td> <a th:text="${festival.name}" th:href="@{/festivals/{festid}(festid = ${festival.id})}"> </a></td>
 			<td th:text="${festival.place}"></td>
 			<td th:text="${festival.date}"></td>
 			<td
@@ -38,6 +35,9 @@
 			<td>
 				<div th:if="${#request.userPrincipal != null and #strings.contains(#request.userPrincipal.authorities,'ADMIN')}">
 					<a th:href="@{/festivals/{festid}/change(festid = ${festival.id})}">Change </a>
+				</div>
+				<div th:if="${#request.userPrincipal != null and #strings.contains(#request.userPrincipal.authorities,'ADMIN')}">
+					<a th:href="@{/festivals/{festid}/delete(festid = ${festival.id})}">Delete </a>
 				</div>
 			</td>
 

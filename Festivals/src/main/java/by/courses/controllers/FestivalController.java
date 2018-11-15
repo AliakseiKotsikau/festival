@@ -46,6 +46,14 @@ public class FestivalController {
 		return "festivals/festivals";
 	}
 
+	@RequestMapping(value = "/{id}/delete")
+	public String deleteFestival(@PathVariable String id, Model model, final RedirectAttributes redirectAttributes) {
+		service.deleteFestival(id);
+
+		redirectAttributes.addFlashAttribute("festivals", service.getFestivals());
+		return "redirect:/festivals";
+	}
+
 	// Adding performers
 
 	@RequestMapping(value = "/{id}/addperf", method = RequestMethod.GET)
