@@ -48,6 +48,9 @@ public class FestivalService {
 	 */
 	public void addParticpipant(String festId) {
 		Festival fest = festRepository.findById(Long.parseLong(festId)).get();
+		if (fest.getParticipants().size() == fest.getSeating()) {
+			throw new NumberFormatException("No places left.");
+		}
 		UserDetails userdetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		Login login = loginRepository.findByUsername(userdetails.getUsername());
 		Participant part = participantRepository.findByUser_id(login.getUser_id());

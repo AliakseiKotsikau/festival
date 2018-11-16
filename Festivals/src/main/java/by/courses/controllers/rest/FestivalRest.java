@@ -47,6 +47,7 @@ public class FestivalRest {
 		return roleService.setActions();
 	}
 
+	// roles of user
 	@RequestMapping("/userroles")
 	public Set<Role> getCurrentUser() {
 		return loginService.getCurentUserRoles();

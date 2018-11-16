@@ -4,12 +4,24 @@
 	<meta charset="UTF-8">
 	<title>Festivals</title>
 	 <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+	 
+	 <style type="text/css">
+	 .error {
+	color: red;
+	font-style: italic;
+}
+	 </style>
 </head>
 <body>
 
 	<th:block th:include="/_menu"></th:block>
+	
 
 	<h1 th:text="${festival.name} + ' (' + ${festival.date} +')'" ></h1>
+	
+	<div th:if="${errorMessage != null}" th:utext="${errorMessage}"
+		class="error">...</div>
+	
 	
 	<ul>
        <li th:each="perf : ${performers}" th:text="${perf.name}">Performer name</li>

@@ -34,6 +34,10 @@ public class FestivalController {
 		return "festivals/festivals";
 	}
 
+	/*
+	 * Info about festival
+	 * 
+	 */
 	@RequestMapping(value = "/{id}")
 	public String getPerformers(@PathVariable() String id, Model model) {
 		Festival fest = service.getFestival(id);
@@ -42,13 +46,30 @@ public class FestivalController {
 		return "festivals/single-fest";
 	}
 
+	/*
+	 * Signing on festival
+	 * 
+	 */
 	@RequestMapping(value = "/{id}/signup")
 	public String addParticipant(@PathVariable String id, Model model) {
-		service.addParticpipant(id);
+		try {
+			service.addParticpipant(id);
+		} catch (Exception e) {
+			e.printStackTrace();
+			model.addAttribute("errorMessage", "Error: " + e.getMessage());
+			Festival fest = service.getFestival(id);
+			model.addAttribute("festival", fest);
+			model.addAttribute("performers", fest.getPerformers());
+			return "festivals/single-fest";
+		}
 		model.addAttribute("festivals", service.getFestivals());
 		return "festivals/festivals";
 	}
 
+	/*
+	 * 
+	 * Deleting festival
+	 */
 	@RequestMapping(value = "/{id}/delete")
 	public String deleteFestival(@PathVariable String id, Model model, final RedirectAttributes redirectAttributes) {
 		service.deleteFestival(id);
@@ -57,8 +78,10 @@ public class FestivalController {
 		return "redirect:/festivals";
 	}
 
-	// Adding performers
-
+	/*
+	 * 
+	 * Adding performers
+	 */
 	@RequestMapping(value = "/{id}/addperf", method = RequestMethod.GET)
 	public String addPerformer(Model model) {
 		Performer perf = new Performer();
@@ -83,8 +106,10 @@ public class FestivalController {
 		return "redirect:/festivals/{id}";
 	}
 
-	// Adding festivals
-
+	/*
+	 * Adding festival
+	 * 
+	 */
 	@RequestMapping(value = "/addfest", method = RequestMethod.GET)
 	public String addFestival(Model model) {
 		Festival fest = new Festival();
@@ -109,8 +134,10 @@ public class FestivalController {
 		return "redirect:/festivals";
 	}
 
-	// Change festival info
-
+	/*
+	 * 
+	 * Change festival info
+	 */
 	@RequestMapping(value = "/{id}/change", method = RequestMethod.GET)
 	public String changeFestival(@PathVariable String id, Model model) {
 		Festival fest = service.getFestival(id);
