@@ -3,6 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <title>Add Festival</title>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
 <style>
          th, td {
          padding: 5px;
@@ -43,6 +50,16 @@
             <tr>
                <td>Seating</td>
                <td><input type="text" th:field="*{seating}" /> </td>
+            </tr>
+            <tr>
+            	<td>Performers</td>
+            	<td> 
+            	<select th:field="*{performers}" multiple size="5">
+            		<option th:each="perf : ${perfs}"  th:value="${{perf}}" th:text="${perf.name}"
+            		 ></option>
+            	</select>
+            	</td>
+            
             </tr>
             <tr>
                <td>&nbsp;</td>

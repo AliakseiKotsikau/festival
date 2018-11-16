@@ -3,26 +3,35 @@
 <head>
 <meta charset="UTF-8">
 <title>Festivals</title>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	
 <style>
-	th, td {
-		padding: 5px;
-	}
-	
-	tr, td {
-    border: 2px solid black;;
-	}
+th, td {
+	padding: 10px;
+}
 
-	table tr td:last-child {
-		border: none;
-	}
-	
-	table {
-	border: none;
-	}
+tr:hover {
+	background-color: #fcf8e3;
+}
+
+ tr, td {
+	border-bottom: 1px solid black;
+} 
+
+
+
+ table {
+	border-collapse: collapse;
+
+} 
+
 </style>
+
 </head>
 <body>
 
@@ -30,7 +39,7 @@
 
 	<h1>Festivals list</h1>
 
-	<table border="1">
+	<table border="0" >
 		<tr>
 			<th>Name</th>
 			<th>Place</th>
@@ -38,26 +47,33 @@
 			<th>Seating</th>
 		</tr>
 		<tr th:each="festival:${festivals}">
-			<td> <a th:text="${festival.name}" th:href="@{/festivals/{festid}(festid = ${festival.id})}"> </a></td>
+			<td><a th:text="${festival.name}"
+				th:href="@{/festivals/{festid}(festid = ${festival.id})}"> </a></td>
 			<td th:text="${festival.place}"></td>
 			<td th:text="${festival.date}"></td>
 			<td
 				th:text="${festival.seating - festival.participants.size()}+'/'+ ${festival.seating}"></td>
+
 			<td class="noBorder">
-				<div th:if="${#request.userPrincipal != null and #strings.contains(#request.userPrincipal.authorities,'ADMIN')}">
-					<a th:href="@{/festivals/{festid}/change(festid = ${festival.id})}">Change </a>
+				<div
+					th:if="${#request.userPrincipal != null and #strings.contains(#request.userPrincipal.authorities,'ADMIN')}">
+					<a th:href="@{/festivals/{festid}/change(festid = ${festival.id})}">Change
+					</a>
 				</div>
-				<div th:if="${#request.userPrincipal != null and #strings.contains(#request.userPrincipal.authorities,'ADMIN')}">
-					<a th:href="@{/festivals/{festid}/delete(festid = ${festival.id})}">Delete </a>
+				<div
+					th:if="${#request.userPrincipal != null and #strings.contains(#request.userPrincipal.authorities,'ADMIN')}">
+					<a th:href="@{/festivals/{festid}/delete(festid = ${festival.id})}">Delete
+					</a>
 				</div>
 			</td>
 
 		</tr>
 	</table>
 	<br>
-	<div th:if="${#request.userPrincipal != null and #strings.contains(#request.userPrincipal.authorities,'ADMIN')}">
+	<div
+		th:if="${#request.userPrincipal != null and #strings.contains(#request.userPrincipal.authorities,'ADMIN')}">
 		<a th:href="@{festivals/addfest}">Add festival</a>
-		</div>
+	</div>
 
 
 </body>

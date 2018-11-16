@@ -12,6 +12,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import by.courses.model.Festival;
 import by.courses.model.Performer;
 import by.courses.service.FestivalService;
+import by.courses.service.PerformerService;
 
 @Controller
 @RequestMapping("/festivals")
@@ -19,10 +20,12 @@ import by.courses.service.FestivalService;
 public class FestivalController {
 
 	private FestivalService service;
+	private PerformerService performerService;
 
-	public FestivalController(FestivalService service) {
+	public FestivalController(FestivalService service, PerformerService performerService) {
 		super();
 		this.service = service;
+		this.performerService = performerService;
 	}
 
 	@RequestMapping({ "", "/" })
@@ -86,6 +89,7 @@ public class FestivalController {
 	public String addFestival(Model model) {
 		Festival fest = new Festival();
 		model.addAttribute("festival", fest);
+		model.addAttribute("perfs", performerService.getPerformers());
 		return "festivals/addFestival";
 	}
 

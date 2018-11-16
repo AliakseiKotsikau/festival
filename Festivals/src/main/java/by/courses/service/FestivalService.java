@@ -1,6 +1,7 @@
 package by.courses.service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,6 +19,7 @@ import by.courses.repositories.PerformerRepository;
 @Service
 public class FestivalService {
 
+	private static final String Set = null;
 	private FestivalRepository festRepository;
 	private ParticipantRepository participantRepository;
 	private LoginRepository loginRepository;
@@ -78,7 +80,16 @@ public class FestivalService {
 	}
 
 	public Festival saveNewFestival(Festival fest) {
-		return festRepository.save(fest);
+		Festival saved = festRepository.save(fest);
+		java.util.Set<Performer> setFest = new HashSet<>(fest.getPerformers()); // to avoid ConcurrentExc
+
+		for (Performer perf : setFest) {
+			Performer loaded = performerRepository.findById(perf.getPerformer_id()).get();
+			loaded.getFestivals_perf().add(saved);
+			performerRepository.save(loaded);
+		}
+
+		return saved;
 	}
 
 	public void deleteFestival(String festId) {
