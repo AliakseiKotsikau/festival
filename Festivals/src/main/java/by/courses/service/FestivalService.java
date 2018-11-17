@@ -110,4 +110,13 @@ public class FestivalService {
 		festRepository.deleteById(Long.parseLong(festId));
 	}
 
+	public void deletePerformer(String festId, String perfId) {
+		Festival fest = festRepository.findById(Long.parseLong(festId)).get();
+		Performer perf = performerRepository.findById(Long.parseLong(perfId)).get();
+		fest.getPerformers().remove(perf);
+		perf.getFestivals_perf().remove(fest);
+		performerRepository.save(perf);
+		festRepository.save(fest);
+	}
+
 }

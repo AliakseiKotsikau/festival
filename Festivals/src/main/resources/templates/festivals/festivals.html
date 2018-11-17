@@ -11,6 +11,20 @@
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	
 <style>
+.login-form {
+	width: 600px;
+	margin: 50px auto;
+	background: #f7f7f7;
+	box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+	padding: 40px;
+}
+
+
+.login-form h2 {
+	margin: 0 0 15px;
+	text-align: center;
+}
+
 th, td {
 	padding: 10px;
 }
@@ -37,8 +51,9 @@ tr:hover {
 
 	<th:block th:include="/_menu"></th:block>
 
-	<h1>Festivals list</h1>
 
+<div class="login-form">
+	<h2>Festivals list</h2>
 	<table border="0" >
 		<tr>
 			<th>Name</th>
@@ -54,7 +69,7 @@ tr:hover {
 			<td
 				th:text="${festival.seating - festival.participants.size()}+'/'+ ${festival.seating}"></td>
 
-			<td class="noBorder">
+			<td >
 				<div
 					th:if="${#request.userPrincipal != null and #strings.contains(#request.userPrincipal.authorities,'ADMIN')}">
 					<a th:href="@{/festivals/{festid}/change(festid = ${festival.id})}">Change
@@ -75,6 +90,7 @@ tr:hover {
 		<a th:href="@{festivals/addfest}">Add festival</a>
 	</div>
 
+</div>
 
 </body>
 </html>

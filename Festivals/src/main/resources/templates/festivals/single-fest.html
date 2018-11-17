@@ -1,42 +1,99 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="en" xmlns:th="http://thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-	<meta charset="UTF-8">
-	<title>Festivals</title>
-	 <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
-	 
-	 <style type="text/css">
-	 .error {
+<meta charset="UTF-8">
+<title>Festivals</title>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<style type="text/css">
+.login-form {
+	width: 600px;
+	margin: 50px auto;
+	background: #f7f7f7;
+	box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+	padding: 40px;
+}
+
+
+.login-form h2 {
+	margin: 0 0 15px;
+	text-align: center;
+}
+
+.error {
 	color: red;
 	font-style: italic;
 }
-	 </style>
+th, td {
+	padding: 10px;
+}
+
+tr:hover {
+	background-color: #fcf8e3;
+}
+
+ tr, td {
+	border-bottom: 1px solid black;
+} 
+
+table {
+	border-collapse: collapse;
+
+} 
+
+ table.center {
+    margin-left:auto; 
+    margin-right:auto;
+  }
+
+}
+</style>
 </head>
 <body>
 
 	<th:block th:include="/_menu"></th:block>
-	
 
-	<h1 th:text="${festival.name} + ' (' + ${festival.date} +')'" ></h1>
-	
+
 	<div th:if="${errorMessage != null}" th:utext="${errorMessage}"
 		class="error">...</div>
-	
-	
-	<ul>
-       <li th:each="perf : ${performers}" th:text="${perf.name}">Performer name</li>
-    </ul>
-    <br>
-    	<div th:if="${#request.userPrincipal != null and #strings.contains(#request.userPrincipal.authorities,'ADMIN')}">
-    		<a  th:href="@{/festivals/{festid}/addperf(festid = ${festival.id})}"> (Add performer) </a>
-    	</div>
-    <hr>
-    
-    <a th:if="${#request.userPrincipal == null} " th:href="@{/registartion}">Sing in</a>
-    
-    <a  th:if="${#request.userPrincipal != null}" th:href="@{/festivals/{festid}/signup(festid = ${festival.id})}">I'll go</a>
-    
-    
+
+	<div class="login-form">
+	<h2 th:text="${festival.name} + ' (' + ${festival.date} +')'"></h2>
+	<table width="400" class="center">
+		<tr th:each="perf : ${performers}">
+			<td th:text="${perf.name}"></td>
+			<td align="right">
+			<div
+				th:if="${#request.userPrincipal != null and #strings.contains(#request.userPrincipal.authorities,'ADMIN')}">
+					<a th:href="@{'/festivals/' + ${festival.id} + '/deleteperf/' + ${perf.performer_id}}">Delete
+					</a>
+			</div>
+			</td>	
+		</tr>
+			
+	</table>
+	<br>
+	<div
+		th:if="${#request.userPrincipal != null and #strings.contains(#request.userPrincipal.authorities,'ADMIN')}">
+		<a th:href="@{/festivals/{festid}/addperf(festid = ${festival.id})}">
+			(Add performer) </a>
+	</div>
+	<hr>
+
+	<a th:if="${#request.userPrincipal == null} "
+		th:href="@{/registartion}">Sing in</a>
+
+	<a th:if="${#request.userPrincipal != null}"
+		th:href="@{/festivals/{festid}/signup(festid = ${festival.id})}">I'll
+		go</a>
+
+</div>
+
 
 </body>
 </html>

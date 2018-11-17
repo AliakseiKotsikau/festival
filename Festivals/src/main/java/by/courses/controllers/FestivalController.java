@@ -162,4 +162,13 @@ public class FestivalController {
 
 	}
 
+	@RequestMapping(value = "/{festid}/deleteperf/{perfid}")
+	public String removePerformer(@PathVariable String festid, Model model, @PathVariable String perfid, final RedirectAttributes redirectAttributes) {
+		service.deletePerformer(festid, perfid);
+		Festival fest = service.getFestival(festid);
+		redirectAttributes.addFlashAttribute("festival", fest);
+		redirectAttributes.addFlashAttribute("performers", fest.getPerformers());
+		return "redirect:/festivals/{festid}";
+	}
+
 }
