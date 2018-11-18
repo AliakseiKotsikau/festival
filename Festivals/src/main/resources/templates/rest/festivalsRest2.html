@@ -3,23 +3,55 @@
 <head>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
   <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	
+<style>
+.login-form {
+	width: 600px;
+	margin: 50px ;
+	background: #f7f7f7;
+	box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+	padding: 40px;
+	float:left;
+}
 
 
-	<style>
-	th, td {
-		padding: 5px;
-	}
-	
-	.performers {
-  	float: right;
-  	width: 70%;
-	}
-	/* table tr td:last-child {
-		border: none;
-	} */
-	
-	
+.login-form h2 {
+	margin: 0 0 15px;
+	text-align: center;
+}
+
+aside {
+float: left;
+margin: 50px;
+width: 20%;
+background: #f7f7f7;
+box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+padding: 40px;
+
+}
+
+th, td {
+	padding: 10px;
+}
+
+tr:hover {
+	background-color: #fcf8e3;
+}
+
+ tr, td {
+	border-bottom: 1px solid black;
+} 
+
+ table {
+	border-collapse: collapse;
+
+} 
 </style>
+
 
   <script>
     $(function() {
@@ -29,22 +61,28 @@
         $.each(data, function(i, f) {
         	var id= f.id;
         	var formatted = $.datepicker.formatDate("yy-mm-dd", new Date(f.date));
-          var tblRow = "<tr>" + "<td>" +"<a href=/festivals/" + id + ">" +  f.name +"</a>" +  "</td>" 
+        	var add = "<td>" + "<button onClick='showList(" +id + ")'>Show festival</button>" + "</td>"; 
+
+          var tblRow = "<tr>" + "<td>" +  f.name + "</td>" 
           + "<td>" + f.place + "</td>" + "<td>" + formatted + "</td>" 
-          + "<td>" + (f.seating - f.participants.length) + "/" + f.seating + "</td>" + "</tr>"
+          + "<td>" + (f.seating - f.participants.length) + "/" + f.seating + "</td>" + add + "</tr>"
           
           $(tblRow).appendTo("#resultdata tbody");
         });
       });
     });
     
-  </script>
-  
-  
-  <script type="text/javascript">
-      $(function() {
-    	   
-      	$.getJSON('/data/festivals', function(data){
+    function showList(id) {
+    	var fest = "/data/festivals/" + id;
+    	$.getJSON(fest, function(data){
+    			var name = data.name;
+    			console.log(name);    			
+    			document.getElementById("festName").innerHTML = name;
+    		});
+    		
+    	var url = "/data/festivals/" + id+ "/perfs";
+    	$("#menu").empty();                    //clear list
+      	$.getJSON(url, function(data){
       		$.each(data,function(index, item) {
       			var litem = "<li>" + item.name + "</li>"
       	
@@ -53,7 +91,7 @@
       	
       	});
       
-      });
+      }
   </script>
   
   <!-- Finds permitted actions for user and hide or show button -->
@@ -108,11 +146,11 @@
 
 	<th:block th:include="/_menu"></th:block>
 
-	<h1>Festivals list</h1>
-
 <article>
 	<section>
-      <table id="resultdata" border="1">
+	<div class="login-form">
+	<h2>Festivals list</h2>
+      <table id="resultdata" border="0">
         <thead>
           <th>Name</th>
           <th>Place</th>
@@ -124,21 +162,31 @@
         </tbody>
         
       </table>
-      </section>
+      <br>
+      <button onClick="javascript:window.location.href='/festivals/addfest'"  id="addfest" >Add festival</button>
+      </div>
       
-      <section class="performers">
-      
+      <aside>
+      <div class="info">
+      		<h3 id="festName">  </h3>
       		<ul id="menu">
       
       		</ul>
+     	 </div>
+      </aside>
       
+      </section>
+      
+      <section class="performers">
+      	<div class="info">
+      		<ul id="menu">
+      
+      		</ul>
+     	 </div>
       	</section>
       
 	</article>
-      
-      <br>
-  
-      <button onClick="javascript:window.location.href='/festivals/addfest'"  id="addfest" >Add festival</button>
+
       
    
 

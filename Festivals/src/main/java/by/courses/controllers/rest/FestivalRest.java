@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import by.courses.model.Festival;
+import by.courses.model.Performer;
 import by.courses.model.Role;
 import by.courses.model.RoleInfo;
 import by.courses.service.FestivalService;
@@ -51,6 +52,11 @@ public class FestivalRest {
 	@RequestMapping("/userroles")
 	public Set<Role> getCurrentUser() {
 		return loginService.getCurentUserRoles();
+	}
+
+	@RequestMapping("/festivals/{id}/perfs")
+	public Set<Performer> getPerformersOfFest(@PathVariable() String id) {
+		return service.getFestival(id).getPerformers();
 	}
 
 }
