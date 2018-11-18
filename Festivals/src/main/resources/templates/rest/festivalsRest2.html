@@ -55,7 +55,9 @@ tr:hover {
 
   <script>
     $(function() {
-      
+    	document.getElementById("info").style.display = "none";
+    	document.getElementById('addfest').style.visibility = 'hidden';
+  	  document.getElementById('signup').style.visibility = 'hidden';
       var result = [];
       $.getJSON('/data/festivals', function(data){
         $.each(data, function(i, f) {
@@ -73,6 +75,7 @@ tr:hover {
     });
     
     function showList(id) {
+    	document.getElementById("info").style.display = "block";
     	var fest = "/data/festivals/" + id;
     	$.getJSON(fest, function(data){
     			var name = data.name;
@@ -98,14 +101,14 @@ tr:hover {
   
   <script type="text/javascript">
      
-      function findAction() {
-    	  var neededRole = "Deafult_ROLE";
+      function findAction(action ,button) {
+    	  var neededRole = [];
         	$.getJSON('/data/rolesinfo', function(data){
         		$.each(data,function(index, item) {
-        			if(item.actions.includes("change")) {
-        				neededRole = item.role.role; 
+        			if(item.actions.includes(action)) {
+        				neededRole.push( item.role.role); 
         				console.log(neededRole);
-        				showButton(neededRole);
+        				showButton(neededRole, button);
         			}
         			    
         		});
@@ -114,26 +117,28 @@ tr:hover {
         
         }
       
-      function showButton(role){
-    	  document.getElementById('addfest').style.visibility = 'hidden';
+      function showButton(roles ,button){
     	  $.getJSON('/data/userroles', function(data){
     		  if (data != null) {
     		  	$.each(data,function(index, item) {
-    	  			if(item.role == role) {
-						document.getElementById('addfest').style.visibility = 'visible';
-						console.log("show Button");
-						return;
-					}
+    		  		for( let i=0; i< roles.length; i++) {
+    	  				if(item.role == roles[i]) {
+							document.getElementById(button).style.visibility = 'visible';
+							console.log("show Button");
+							return;
+						}
+    		  		}
     	  
     		  	});
     		 }
     		  
-    		  else document.getElementById('addfest').style.visibility = 'hidden';
+    		  else document.getElementById(button).style.visibility = 'hidden';
     		  
     	  });
       }
             
-      findAction();
+      findAction("change", 'addfest');
+      findAction("signup", 'signup');
       
   </script>
 
@@ -166,24 +171,18 @@ tr:hover {
       <button onClick="javascript:window.location.href='/festivals/addfest'"  id="addfest" >Add festival</button>
       </div>
       
-      <aside>
+      <aside id="info">
       <div class="info">
       		<h3 id="festName">  </h3>
       		<ul id="menu">
       
       		</ul>
+      		<button onClick="javascript:window.location.href='/festivals/addfest'"  id="signup" >I'll come</button>
      	 </div>
       </aside>
       
       </section>
       
-      <section class="performers">
-      	<div class="info">
-      		<ul id="menu">
-      
-      		</ul>
-     	 </div>
-      	</section>
       
 	</article>
 
