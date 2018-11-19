@@ -30,6 +30,7 @@ public class RoleService {
 		adminInfo.getActions().add("addfest");
 		adminInfo.getActions().add("addperf");
 		adminInfo.getActions().add("admin");
+		adminInfo.getActions().add("delete");
 		actions.add(adminInfo);
 
 		Role user = roleRepository.findByRole("ROLE_USER");

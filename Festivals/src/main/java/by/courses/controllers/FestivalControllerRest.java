@@ -38,4 +38,15 @@ public class FestivalControllerRest {
 		model.addAttribute("festival", fest);
 		return "festivals/addFestival";
 	}
+
+	@RequestMapping(value = "/{id}/signup")
+	public String addParticipant(@PathVariable String id, Model model) {
+		try {
+			service.addParticpipant(id);
+		} catch (Exception e) {
+			e.printStackTrace();
+			model.addAttribute("errorMessage", "Error: " + e.getMessage());
+		}
+		return "redirect:/festivals";
+	}
 }

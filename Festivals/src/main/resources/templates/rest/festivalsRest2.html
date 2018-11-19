@@ -1,23 +1,24 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://thymeleaf.org">
 <head>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-  <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script
+	src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-	
+
 <style>
 .login-form {
-	width: 600px;
-	margin: 50px ;
+	width: 650px;
+	margin: 50px;
 	background: #f7f7f7;
 	box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
 	padding: 40px;
-	float:left;
+	float: left;
 }
-
 
 .login-form h2 {
 	margin: 0 0 15px;
@@ -25,13 +26,12 @@
 }
 
 aside {
-float: left;
-margin: 50px;
-width: 20%;
-background: #f7f7f7;
-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
-padding: 40px;
-
+	float: left;
+	margin: 50px;
+	width: 300px;
+	background: #f7f7f7;
+	box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+	padding: 40px;
 }
 
 th, td {
@@ -42,105 +42,149 @@ tr:hover {
 	background-color: #fcf8e3;
 }
 
- tr, td {
+tr, td {
 	border-bottom: 1px solid black;
-} 
+}
 
- table {
+table {
 	border-collapse: collapse;
-
-} 
+}
 </style>
 
 
-  <script>
-    $(function() {
-    	document.getElementById("info").style.display = "none";
-    	document.getElementById('addfest').style.visibility = 'hidden';
-  	  document.getElementById('signup').style.visibility = 'hidden';
-      var result = [];
-      $.getJSON('/data/festivals', function(data){
-        $.each(data, function(i, f) {
-        	var id= f.id;
-        	var formatted = $.datepicker.formatDate("yy-mm-dd", new Date(f.date));
-        	var add = "<td>" + "<button onClick='showList(" +id + ")'>Show festival</button>" + "</td>"; 
+<script>
+	$(function() {
+		document.getElementById("info").style.display = "none";
+		document.getElementById('addfest').style.visibility = 'hidden';
+		document.getElementById('signup').style.visibility = 'hidden';
 
-          var tblRow = "<tr>" + "<td>" +  f.name + "</td>" 
-          + "<td>" + f.place + "</td>" + "<td>" + formatted + "</td>" 
-          + "<td>" + (f.seating - f.participants.length) + "/" + f.seating + "</td>" + add + "</tr>"
-          
-          $(tblRow).appendTo("#resultdata tbody");
-        });
-      });
-    });
-    
-    function showList(id) {
-    	document.getElementById("info").style.display = "block";
-    	var fest = "/data/festivals/" + id;
-    	$.getJSON(fest, function(data){
-    			var name = data.name;
-    			console.log(name);    			
-    			document.getElementById("festName").innerHTML = name;
-    		});
-    		
-    	var url = "/data/festivals/" + id+ "/perfs";
-    	$("#menu").empty();                    //clear list
-      	$.getJSON(url, function(data){
-      		$.each(data,function(index, item) {
-      			var litem = "<li>" + item.name + "</li>"
-      	
-         	 	$(litem).appendTo("#menu");
-      		});
-      	
-      	});
-      
-      }
-  </script>
-  
-  <!-- Finds permitted actions for user and hide or show button -->
-  
-  <script type="text/javascript">
-     
-      function findAction(action ,button) {
-    	  var neededRole = [];
-        	$.getJSON('/data/rolesinfo', function(data){
-        		$.each(data,function(index, item) {
-        			if(item.actions.includes(action)) {
-        				neededRole.push( item.role.role); 
-        				console.log(neededRole);
-        				showButton(neededRole, button);
-        			}
-        			    
-        		});
-        	
-        	});
-        
-        }
-      
-      function showButton(roles ,button){
-    	  $.getJSON('/data/userroles', function(data){
-    		  if (data != null) {
-    		  	$.each(data,function(index, item) {
-    		  		for( let i=0; i< roles.length; i++) {
-    	  				if(item.role == roles[i]) {
-							document.getElementById(button).style.visibility = 'visible';
-							console.log("show Button");
-							return;
-						}
-    		  		}
-    	  
-    		  	});
-    		 }
-    		  
-    		  else document.getElementById(button).style.visibility = 'hidden';
-    		  
-    	  });
-      }
-            
-      findAction("change", 'addfest');
-      findAction("signup", 'signup');
-      
-  </script>
+		var result = [];
+		$.getJSON('/data/festivals', function(data) {
+			$.each(data, function(i, f) {
+				var id = f.id;
+				var formatted = $.datepicker.formatDate("yy-mm-dd", new Date(
+						f.date));
+				var addBtn = "<td>" + "<button onClick='showList(" + id
+						+ ")'>Show festival</button>" + "</td>";
+
+				var tblRow = "<tr>" + "<td>" + f.name + "</td>" + "<td>"
+						+ f.place + "</td>" + "<td>" + formatted + "</td>"
+						+ "<td>" + (f.seating - f.participants.length) + "/"
+						+ f.seating + "</td>" + addBtn + "</tr>"
+
+				$(tblRow).appendTo("#resultdata tbody");
+			});
+		});
+	});
+
+	function showList(id) {
+		
+		document.getElementById("signup").onclick = function() { // button for signup
+			location.href = "/festivals/" + id + "/signup";
+		};
+		document.getElementById("info").style.display = "block";
+		var fest = "/data/festivals/" + id;
+		$.getJSON(fest, function(data) {
+			var name = data.name;
+			console.log(name);
+			document.getElementById("festName").innerHTML = name;
+		});
+
+		var url = "/data/festivals/" + id + "/perfs";
+		$("#performers").empty(); //clear table
+		$.getJSON(url, function(data) {
+			if (data.lenght != 0) {
+				var table = document.getElementById("performers");
+				var i = 1;
+				$.each(data, function(index, item) { // create performers table
+					tr = document.createElement("tr");
+					table.append(tr);
+					tr.appendChild(td = document.createElement("td"));
+					td.innerHTML = item.name;
+					tr.appendChild(td = document.createElement("td"));
+
+					var btn = document.createElement('input');
+					btn.type = "button";
+					btn.id = "deleteperf" + i;
+					btn.style = "visibility:hidden;";
+					btn.className = "btn";
+					btn.value = "Delete";
+					btn.onclick = function() {
+							location.href="/festivals/" + id + "/deleteperf/" + item.performer_id;
+						};
+					td.appendChild(btn);
+
+					findAction("delete", "deleteperf"+i);
+					i++;
+				});
+				
+
+			}
+		});
+
+	}
+</script>
+
+<!-- Finds permitted actions for user and hide or show button -->
+
+<script type="text/javascript">
+	//defines wich users have acces to button	
+
+	function findAction(action, button) {
+		var neededRole = [];
+		$.getJSON('/data/rolesinfo', function(data) {
+			$.each(data, function(index, item) {
+				if (item.actions.includes(action)) {
+					neededRole.push(item.role.role);
+					showButton(neededRole, button);
+				}
+
+			});
+
+		});
+
+	}
+
+	//shows defined button
+
+	function showButton(roles, button) {
+		$
+				.getJSON(
+						'/data/userroles',
+						function(data) {
+							if (data != null) {
+								$
+										.each(
+												data,
+												function(index, item) {
+													for (let i = 0; i < roles.length; i++) {
+														if (item.role == roles[i]) {
+															if (document
+																	.getElementById(button) != null) {
+																document
+																		.getElementById(button).style.visibility = 'visible';
+																console
+																		.log("show Button " + button);
+																return true;
+															}
+														}
+													}
+
+												});
+							}
+
+							else 
+								document.getElementById(button).style.visibility = 'hidden';
+							return false;
+							
+							
+
+						});
+	}
+
+	findAction("change", 'addfest');
+	findAction("signup", 'signup');
+</script>
 
 
 </head>
@@ -151,45 +195,52 @@ tr:hover {
 
 	<th:block th:include="/_menu"></th:block>
 
-<article>
-	<section>
-	<div class="login-form">
-	<h2>Festivals list</h2>
-      <table id="resultdata" border="0">
-        <thead>
-          <th>Name</th>
-          <th>Place</th>
-          <th>Date</th>
-          <th>Seating</th>
-        </thead>
-        <tbody>
+	<article>
+		<section>
+			<div class="login-form">
+				<h2>Festivals list</h2>
+				<table id="resultdata" border="0">
+					<thead>
+						<th>Name</th>
+						<th>Place</th>
+						<th>Date</th>
+						<th>Seating</th>
+					</thead>
+					<tbody>
 
-        </tbody>
-        
-      </table>
-      <br>
-      <button onClick="javascript:window.location.href='/festivals/addfest'"  id="addfest" >Add festival</button>
-      </div>
-      
-      <aside id="info">
-      <div class="info">
-      		<h3 id="festName">  </h3>
-      		<ul id="menu">
-      
-      		</ul>
-      		<button onClick="javascript:window.location.href='/festivals/addfest'"  id="signup" >I'll come</button>
-     	 </div>
-      </aside>
-      
-      </section>
-      
-      
+					</tbody>
+
+				</table>
+				<br>
+				<button
+					onClick="javascript:window.location.href='/festivals/addfest'"
+					id="addfest">Add festival</button>
+			</div>
+
+			<aside id="info">
+				<div class="info">
+					<h3 id="festName"></h3>
+
+					<table id="performers">
+
+
+					</table>
+
+					<br>
+
+					<button id="signup">I'll come</button>
+				</div>
+			</aside>
+
+		</section>
+
+
 	</article>
 
-      
-   
 
-      
+
+
+
 </body>
 
 
