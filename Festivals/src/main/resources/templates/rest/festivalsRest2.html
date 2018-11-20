@@ -25,7 +25,20 @@
 	text-align: center;
 }
 
-aside {
+.perf-form {
+	width: 350px;
+	margin: 50px;
+	background: #f7f7f7;
+	box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+	padding: 40px;
+	float: right;
+}
+
+#showPerfBlock {
+	float: right;
+}
+
+.info {
 	float: left;
 	margin: 50px;
 	width: 300px;
@@ -53,10 +66,21 @@ table {
 
 
 <script>
-	$(function() {
+	
+	/* Loads table of festivals and hides unpermitted buttons  */ 
+
+	$(function() { 
+		
+		//hides all buttons that cannot be seen for not logged user
+		
 		document.getElementById("info").style.display = "none";
 		document.getElementById('addfest').style.visibility = 'hidden';
 		document.getElementById('signup').style.visibility = 'hidden';
+		document.getElementById('addPerfBlock').style.display = 'none';
+		document.getElementById('showPerfBlock').style.visibility = 'hidden';
+
+		
+		//creates table of festivals
 
 		var result = [];
 		$.getJSON('/data/festivals', function(data) {
@@ -77,12 +101,14 @@ table {
 		});
 	});
 
+	/* Shows list of performers and delete buttons */
+	
 	function showList(id) {
 		
-		document.getElementById("signup").onclick = function() { // button for signup
-			location.href = "/festivals/" + id + "/signup";
-		};
-		document.getElementById("info").style.display = "block";
+		setButtons(id);
+		
+		//sets festival name to list
+		
 		var fest = "/data/festivals/" + id;
 		$.getJSON(fest, function(data) {
 			var name = data.name;
@@ -90,6 +116,8 @@ table {
 			document.getElementById("festName").innerHTML = name;
 		});
 
+		// loads list from json
+		
 		var url = "/data/festivals/" + id + "/perfs";
 		$("#performers").empty(); //clear table
 		$.getJSON(url, function(data) {
@@ -110,7 +138,7 @@ table {
 					btn.className = "btn";
 					btn.value = "Delete";
 					btn.onclick = function() {
-							location.href="/festivals/" + id + "/deleteperf/" + item.performer_id;
+							location.href="/festivals/" + id + "/deleteperf/" + item.performer_id;   // hides delete buttons if user isnt admin
 						};
 					td.appendChild(btn);
 
@@ -123,6 +151,56 @@ table {
 		});
 
 	}
+	
+	
+	// Sets onclick functions of buttons
+	
+	function setButtons(id) {
+
+		document.getElementById("addperfBtn").onclick = function() { // button for addperf
+			addPerformerToFestival(id);
+		};
+		
+		document.getElementById("signup").onclick = function() { // button for signup
+			location.href = "/festivals/" + id + "/signup";
+		};
+		
+		document.getElementById("info").style.display = "block";
+		
+		document.getElementById("showPerfBlock").onclick = function() { // button for show performer button
+			document.getElementById("addPerfBlock").style.display = "block";
+		};
+		
+
+		
+		
+	}
+	
+	/* Adds performer to chosen festival */
+	
+	function addPerformerToFestival(id) {
+		const url = "data/festivals/" + id + "/addperf";
+		console.log(url);
+		fetch(url, {
+		    method : "POST",
+		    headers: {
+	            "Content-Type": "application/json; charset=utf-8",
+	        },
+		    body : JSON.stringify({
+		         name : document.getElementById('perfName').value,
+
+		    })
+		}).then(
+		    response => response.json() 
+		).then(
+		    html => console.log(html)
+		);
+		
+		
+	}
+	
+	
+	
 </script>
 
 <!-- Finds permitted actions for user and hide or show button -->
@@ -153,9 +231,8 @@ table {
 						'/data/userroles',
 						function(data) {
 							if (data != null) {
-								$
-										.each(
-												data,
+								$.each(
+										data,
 												function(index, item) {
 													for (let i = 0; i < roles.length; i++) {
 														if (item.role == roles[i]) {
@@ -174,7 +251,7 @@ table {
 							}
 
 							else 
-								document.getElementById(button).style.visibility = 'hidden';
+								//document.getElementById(button).style.visibility = 'hidden';
 							return false;
 							
 							
@@ -184,7 +261,10 @@ table {
 
 	findAction("change", 'addfest');
 	findAction("signup", 'signup');
+	findAction("addperf", "showPerfBlock");
+	
 </script>
+
 
 
 </head>
@@ -217,22 +297,46 @@ table {
 					id="addfest">Add festival</button>
 			</div>
 
+
+
+			<!-- Festival info and add performer form -->
+
 			<aside id="info">
-				<div class="info">
-					<h3 id="festName"></h3>
-
-					<table id="performers">
-
-
-					</table>
-
-					<br>
-
-					<button id="signup">I'll come</button>
-				</div>
+				<section>
+					<div class="info">
+						<h3 id="festName"></h3>
+						<table id="performers">
+						</table>
+						<br>
+						<button id="signup">I'll come</button>
+						<button id="showPerfBlock">Add performer</button>
+					</div>
+					
+					<!-- Performer adding form -->
+					
+					<aside style="float:left;" id="addPerfBlock">
+						<div class="perf-form">
+							<form id="addperf" method="POST">
+								<h2 align="center">Adding a performer</h2>
+								<table>
+									<tr>
+										<td>Performer</td>
+										<td><input type="text" name="perfName" id="perfName" /></td>
+									</tr>
+								</table>
+								<br>
+								<button id="addperfBtn">Add Performer</button>
+							</form>
+						</div>
+					</aside>
+					
+					
+				</section>
 			</aside>
 
 		</section>
+
+
 
 
 	</article>

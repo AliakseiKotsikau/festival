@@ -49,4 +49,11 @@ public class FestivalControllerRest {
 		}
 		return "redirect:/festivals";
 	}
+
+	@RequestMapping(value = "/{festid}/deleteperf/{perfid}")
+	public String removePerformer(@PathVariable String festid, @PathVariable String perfid) {
+		service.deletePerformer(festid, perfid);
+		return "redirect:/festivals";
+	}
+
 }

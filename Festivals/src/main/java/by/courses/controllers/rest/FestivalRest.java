@@ -3,8 +3,12 @@ package by.courses.controllers.rest;
 import java.util.Set;
 
 import org.springframework.context.annotation.Profile;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import by.courses.model.Festival;
@@ -57,6 +61,15 @@ public class FestivalRest {
 	@RequestMapping("/festivals/{id}/perfs")
 	public Set<Performer> getPerformersOfFest(@PathVariable() String id) {
 		return service.getFestival(id).getPerformers();
+	}
+
+	@RequestMapping(value = "/festivals/{id}/addperf", produces = "application/json", method = RequestMethod.POST)
+	public ResponseEntity<Performer> saveNewPerformer(@RequestBody Performer perf, @PathVariable() String id) {
+		if (perf != null) {
+			service.saveNewPerformer(id, perf);
+		}
+
+		return new ResponseEntity<Performer>(perf, HttpStatus.OK);
 	}
 
 }
