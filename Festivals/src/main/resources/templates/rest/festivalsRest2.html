@@ -190,7 +190,7 @@ table {
 			document.getElementById("addFestBlock").style.display = "block";
 			$.getJSON("/data/perfs", function (result) {
 	            $.each(result, function (i, perf) {
-	                $("#performerSelect").append("<option value=" + perf + ">" + perf.name + "</option>");
+	                $("#performerSelect").append("<option value=" + perf.performer_id + ">" + perf.name + "</option>");
 	            });
 	        });
 		
@@ -227,7 +227,18 @@ table {
 	
 	function addFestival() {
 		const url = "data/festivals/addfest";
-		console.log(url);
+		
+		//finds selected values in select and writes perormer's ids to array
+		var selectValues = [] , i, j ,cur;
+		var sel = document.getElementById('performerSelect');
+		for (i = 0, j = sel.options.length; i < j; i++) {
+	        cur = sel.options[i];
+	        if (cur.selected) {
+	            selectValues.push(encodeURIComponent(cur.value));
+	        }
+	    }
+		
+		
 		fetch(url, {
 		    method : "POST",
 		    headers: {
@@ -238,6 +249,7 @@ table {
 		         place : document.getElementById('place').value,
 		         date: document.getElementById('date').value,
 		         seating: document.getElementById('seating').value,
+		         performers: selectValues,
 
 		    })
 		}).then(
@@ -414,7 +426,7 @@ table {
 							<tr>
 								<td>Performers</td>
 								<td>
-								<select id="performerSelect" multiple size="5">
+								<select id="performerSelect" name="performerSelect" multiple size="5">
 								</select>
 								</td>
 							</tr>

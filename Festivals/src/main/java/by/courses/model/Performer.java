@@ -14,11 +14,22 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "Performer")
 public class Performer {
 	private Long performer_id;
 	private String name;
+
+	public Performer() {
+		super();
+	}
+
+	public Performer(String id) {
+		super();
+		this.performer_id = Long.parseLong(id);
+	}
 
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "festival_performer", joinColumns = { @JoinColumn(name = "performer_id") }, inverseJoinColumns = { @JoinColumn(name = "festival_id") })
@@ -58,6 +69,7 @@ public class Performer {
 		return festivals_perf;
 	}
 
+	@JsonIgnore
 	public void setFestivals_perf(Set<Festival> festivals_perf) {
 		this.festivals_perf = festivals_perf;
 	}
@@ -87,6 +99,11 @@ public class Performer {
 		} else if (!performer_id.equals(other.performer_id))
 			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "Performer [performer_id=" + performer_id + ", name=" + name + "]";
 	}
 
 }

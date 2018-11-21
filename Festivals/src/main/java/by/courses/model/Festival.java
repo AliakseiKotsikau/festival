@@ -16,8 +16,6 @@ import javax.persistence.TemporalType;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 @Entity
 @Table(name = "Festival")
 public class Festival {
@@ -29,7 +27,6 @@ public class Festival {
 
 	private Set<Participant> participants = new HashSet<>();
 
-	@JsonIgnore
 	private Set<Performer> performers = new HashSet<>();
 
 	// Add participants and performers
