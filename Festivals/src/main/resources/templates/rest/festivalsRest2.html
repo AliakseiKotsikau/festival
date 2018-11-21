@@ -34,6 +34,15 @@
 	float: right;
 }
 
+.festival-form {
+	width: 450px;
+	margin: 50px;
+	background: #f7f7f7;
+	box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+	padding: 40px;
+	float: left;
+}
+
 #showPerfBlock {
 	float: right;
 }
@@ -65,6 +74,7 @@ table {
 </style>
 
 
+
 <script>
 	
 	/* Loads table of festivals and hides unpermitted buttons  */ 
@@ -74,9 +84,10 @@ table {
 		//hides all buttons that cannot be seen for not logged user
 		
 		document.getElementById("info").style.display = "none";
-		document.getElementById('addfest').style.visibility = 'hidden';
+		document.getElementById('showAddFestBlock').style.visibility = 'hidden';
 		document.getElementById('signup').style.visibility = 'hidden';
-		document.getElementById('addPerfBlock').style.display = 'none';
+		document.getElementById('addPerfBlock').style.display = 'none';  // from for adding performer
+		document.getElementById('addFestBlock').style.display = 'none';  // form for adding festival
 		document.getElementById('showPerfBlock').style.visibility = 'hidden';
 
 		
@@ -161,6 +172,10 @@ table {
 			addPerformerToFestival(id);
 		};
 		
+		document.getElementById("addFestBtn").onclick = function() { // button for saving neww fest
+			addFestival();
+		};
+		
 		document.getElementById("signup").onclick = function() { // button for signup
 			location.href = "/festivals/" + id + "/signup";
 		};
@@ -171,7 +186,9 @@ table {
 			document.getElementById("addPerfBlock").style.display = "block";
 		};
 		
-
+		document.getElementById("showAddFestBlock").onclick = function() { // button for show festival block
+			document.getElementById("addFestBlock").style.display = "block";
+		};
 		
 		
 	}
@@ -196,6 +213,32 @@ table {
 		    html => console.log(html)
 		);
 		
+		
+	}
+	
+	
+	//Adds new festival
+	
+	function addFestival() {
+		const url = "data/festivals/addfest";
+		console.log(url);
+		fetch(url, {
+		    method : "POST",
+		    headers: {
+	            "Content-Type": "application/json; charset=utf-8",
+	        },
+		    body : JSON.stringify({
+		         name : document.getElementById('newFestName').value,
+		         place : document.getElementById('place').value,
+		         date: document.getElementById('date').value,
+		         seating: document.getElementById('seating').value,
+
+		    })
+		}).then(
+		    response => response.json() 
+		).then(
+		    html => console.log(html)
+		);
 		
 	}
 	
@@ -259,7 +302,7 @@ table {
 						});
 	}
 
-	findAction("change", 'addfest');
+	findAction("change", 'showAddFestBlock');
 	findAction("signup", 'signup');
 	findAction("addperf", "showPerfBlock");
 	
@@ -292,17 +335,19 @@ table {
 
 				</table>
 				<br>
-				<button
-					onClick="javascript:window.location.href='/festivals/addfest'"
-					id="addfest">Add festival</button>
+				<button id="showAddFestBlock">Add festival</button>
 			</div>
 
-
+			<!-- Adding festival block -->
+			
 
 			<!-- Festival info and add performer form -->
 
 			<aside id="info">
+
 				<section>
+
+				<!-- Table of festival performers -->
 					<div class="info">
 						<h3 id="festName"></h3>
 						<table id="performers">
@@ -311,10 +356,10 @@ table {
 						<button id="signup">I'll come</button>
 						<button id="showPerfBlock">Add performer</button>
 					</div>
-					
+
 					<!-- Performer adding form -->
-					
-					<aside style="float:left;" id="addPerfBlock">
+
+					<aside style="float: left;" id="addPerfBlock">
 						<div class="perf-form">
 							<form id="addperf" method="POST">
 								<h2 align="center">Adding a performer</h2>
@@ -329,12 +374,50 @@ table {
 							</form>
 						</div>
 					</aside>
-					
-					
+
+
+
+
 				</section>
 			</aside>
 
 		</section>
+		
+		<aside >		
+				<div id="addFestBlock" class="festival-form">
+					<form id="addFestForm" method="POST">
+						<h2 align="center">Adding a festival</h2>
+						<table>
+							<tr>
+								<td>Festival Name</td>
+								<td><input type="text" name="newFestName" id="newFestName" /></td>
+							</tr>
+							<tr>
+								<td>Place</td>
+								<td><input type="text" name="place" id="place" /></td>
+							</tr>
+							<tr>
+								<td>Date</td>
+								<td><input type="date" pattern="yyyy-MM-dd" name="date" id="date" />
+								</td>
+							</tr>
+							<tr>
+								<td>Seating</td>
+								<td><input type="text" name="seating" id="seating" /></td>
+							</tr>
+							<tr>
+								<td>Performers</td>
+								<td><select multiple size="5">
+										<option></option>
+								</select></td>
+							</tr>
+						</table>
+						<br>
+						<button id="addFestBtn">Save Festival</button>
+					</form>
+				</div>
+			</aside>
+		
 
 
 

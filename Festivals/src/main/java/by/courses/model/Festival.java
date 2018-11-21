@@ -142,4 +142,9 @@ public class Festival {
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		return "Festival [name=" + name + ", date=" + date + ", place=" + place + ", seating=" + seating + "]";
+	}
+
 }
