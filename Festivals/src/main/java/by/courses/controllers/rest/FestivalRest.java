@@ -17,6 +17,7 @@ import by.courses.model.Role;
 import by.courses.model.RoleInfo;
 import by.courses.service.FestivalService;
 import by.courses.service.LoginService;
+import by.courses.service.PerformerService;
 import by.courses.service.RoleService;
 
 @RestController
@@ -27,12 +28,14 @@ public class FestivalRest {
 	private FestivalService service;
 	private RoleService roleService;
 	private LoginService loginService;
+	private PerformerService performerService;
 
-	public FestivalRest(FestivalService service, RoleService roleService, LoginService loginService) {
+	public FestivalRest(FestivalService service, RoleService roleService, LoginService loginService, PerformerService performerService) {
 		super();
 		this.service = service;
 		this.roleService = roleService;
 		this.loginService = loginService;
+		this.performerService = performerService;
 	}
 
 	// list of festivals
@@ -61,6 +64,11 @@ public class FestivalRest {
 	@RequestMapping("/festivals/{id}/perfs")
 	public Set<Performer> getPerformersOfFest(@PathVariable() String id) {
 		return service.getFestival(id).getPerformers();
+	}
+
+	@RequestMapping("/perfs")
+	public Iterable<Performer> getAllPerformers() {
+		return performerService.getPerformers();
 	}
 
 	@RequestMapping(value = "/festivals/{id}/addperf", produces = "application/json", method = RequestMethod.POST)

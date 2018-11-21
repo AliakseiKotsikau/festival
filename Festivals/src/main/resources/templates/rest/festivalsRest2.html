@@ -188,6 +188,12 @@ table {
 		
 		document.getElementById("showAddFestBlock").onclick = function() { // button for show festival block
 			document.getElementById("addFestBlock").style.display = "block";
+			$.getJSON("/data/perfs", function (result) {
+	            $.each(result, function (i, perf) {
+	                $("#performerSelect").append("<option value=" + perf + ">" + perf.name + "</option>");
+	            });
+	        });
+		
 		};
 		
 		
@@ -407,9 +413,10 @@ table {
 							</tr>
 							<tr>
 								<td>Performers</td>
-								<td><select multiple size="5">
-										<option></option>
-								</select></td>
+								<td>
+								<select id="performerSelect" multiple size="5">
+								</select>
+								</td>
 							</tr>
 						</table>
 						<br>

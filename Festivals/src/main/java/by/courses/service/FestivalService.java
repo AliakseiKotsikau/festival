@@ -74,11 +74,13 @@ public class FestivalService {
 	}
 
 	public void saveNewPerformer(String festId, Performer perf) {
-		Festival fest = festRepository.findById(Long.parseLong(festId)).get();
-		fest.getPerformers().add(perf);
-		perf.getFestivals_perf().add(fest);
-		festRepository.save(fest);
-		performerRepository.save(perf);
+		if (!perf.getName().isBlank()) {
+			Festival fest = festRepository.findById(Long.parseLong(festId)).get();
+			fest.getPerformers().add(perf);
+			perf.getFestivals_perf().add(fest);
+			festRepository.save(fest);
+			performerRepository.save(perf);
+		}
 
 	}
 
