@@ -47,6 +47,14 @@
 	float: right;
 }
 
+#festivalTable button {
+	width: 60px;
+	height: 24px;
+	font-size: 12px;
+	margin: 1px;
+	color: red;
+}
+
 .info {
 	float: left;
 	margin: 50px;
@@ -58,6 +66,10 @@
 
 th, td {
 	padding: 10px;
+}
+
+select {
+	width: 175px;
 }
 
 tr:hover {
@@ -95,19 +107,66 @@ table {
 
 		var result = [];
 		$.getJSON('/data/festivals', function(data) {
-			$.each(data, function(i, f) {
-				var id = f.id;
+			var table = document.getElementById("festivalTable");
+			var i = 1;
+			$.each(data, function(i, item) {
+				
+				tr = document.createElement("tr");
+				table.append(tr);
+				tr.appendChild(td = document.createElement("td"));
+				td.innerHTML = item.name;
+				tr.appendChild(td = document.createElement("td"));
 				var formatted = $.datepicker.formatDate("yy-mm-dd", new Date(
-						f.date));
-				var addBtn = "<td>" + "<button onClick='showList(" + id
-						+ ")'>Show festival</button>" + "</td>";
+						item.date));
+				td.innerHTML = formatted;
+				tr.appendChild(td = document.createElement("td"));
+				td.innerHTML = item.place;
+				tr.appendChild(td = document.createElement("td"));
+				td.innerHTML = item.seating;
+				tr.appendChild(td = document.createElement("td"));
+				
+				//buttons for single festivals (show list of performers)
+				var btn = document.createElement('button');
+				btn.type = "button";
+				btn.className = "btn";
+				btn.innerHTML = "Show";
+				btn.onclick = function() {
+						showList(item.id);   
+					};
+				td.appendChild(btn);
+				
 
-				var tblRow = "<tr>" + "<td>" + f.name + "</td>" + "<td>"
-						+ f.place + "</td>" + "<td>" + formatted + "</td>"
-						+ "<td>" + (f.seating - f.participants.length) + "/"
-						+ f.seating + "</td>" + addBtn + "</tr>"
+				
+				//deletes chosen festival
+				var btn = document.createElement('button');
+				btn.type = "button";
+				btn.id = "deletefest" + i;
+				btn.style = "visibility:hidden;";
+				btn.className = "btn";
+				btn.innerHTML = "Delete";
+				btn.onclick = function() {
+					location.href="/festivals/" + item.id + "/delete";
+					};
+				td.appendChild(btn);
+				
+				//deletes chosen festival
+				var btn = document.createElement('button');
+				btn.type = "button";
+				btn.id = "changefest" + i;
+				btn.style = "visibility:hidden;";
+				btn.className = "btn";
+				btn.innerHTML = "Change";
+				btn.onclick = function() {
+					changeFestival(item.id);
+					};
+				td.appendChild(btn);
+				
+				findAction("change", "changefest" + i)
+				findAction("delete", "deletefest" + i);
+				i++;
+				
+				
 
-				$(tblRow).appendTo("#resultdata tbody");
 			});
 		});
 	});
@@ -116,6 +175,10 @@ table {
 	
 	function showList(id) {
 		
+		document.getElementById('addFestBlock').style.display = 'none';
+		document.getElementById("info").style.display = "block";
+		
+		//sets all buttons onclick that require festival ID
 		setButtons(id);
 		
 		//sets festival name to list
@@ -163,6 +226,10 @@ table {
 
 	}
 	
+	function changeFestival(id) {
+		
+	}
+	
 	
 	// Sets onclick functions of buttons
 	
@@ -180,14 +247,17 @@ table {
 			location.href = "/festivals/" + id + "/signup";
 		};
 		
-		document.getElementById("info").style.display = "block";
 		
 		document.getElementById("showPerfBlock").onclick = function() { // button for show performer button
 			document.getElementById("addPerfBlock").style.display = "block";
 		};
 		
 		document.getElementById("showAddFestBlock").onclick = function() { // button for show festival block
+			document.getElementById("info").style.display = "none";
 			document.getElementById("addFestBlock").style.display = "block";
+			
+		
+			//shows list of all performers
 			$.getJSON("/data/perfs", function (result) {
 	            $.each(result, function (i, perf) {
 	                $("#performerSelect").append("<option value=" + perf.performer_id + ">" + perf.name + "</option>");
@@ -340,16 +410,13 @@ table {
 		<section>
 			<div class="login-form">
 				<h2>Festivals list</h2>
-				<table id="resultdata" border="0">
+				<table id="festivalTable" border="0">
 					<thead>
 						<th>Name</th>
 						<th>Place</th>
 						<th>Date</th>
 						<th>Seating</th>
 					</thead>
-					<tbody>
-
-					</tbody>
 
 				</table>
 				<br>
@@ -357,7 +424,7 @@ table {
 			</div>
 
 			<!-- Adding festival block -->
-			
+
 
 			<!-- Festival info and add performer form -->
 
@@ -365,7 +432,7 @@ table {
 
 				<section>
 
-				<!-- Table of festival performers -->
+					<!-- Table of festival performers -->
 					<div class="info">
 						<h3 id="festName"></h3>
 						<table id="performers">
@@ -400,43 +467,42 @@ table {
 			</aside>
 
 		</section>
-		
-		<aside >		
-				<div id="addFestBlock" class="festival-form">
-					<form id="addFestForm" method="POST">
-						<h2 align="center">Adding a festival</h2>
-						<table>
-							<tr>
-								<td>Festival Name</td>
-								<td><input type="text" name="newFestName" id="newFestName" /></td>
-							</tr>
-							<tr>
-								<td>Place</td>
-								<td><input type="text" name="place" id="place" /></td>
-							</tr>
-							<tr>
-								<td>Date</td>
-								<td><input type="date" pattern="yyyy-MM-dd" name="date" id="date" />
-								</td>
-							</tr>
-							<tr>
-								<td>Seating</td>
-								<td><input type="text" name="seating" id="seating" /></td>
-							</tr>
-							<tr>
-								<td>Performers</td>
-								<td>
-								<select id="performerSelect" name="performerSelect" multiple size="5">
-								</select>
-								</td>
-							</tr>
-						</table>
-						<br>
-						<button id="addFestBtn">Save Festival</button>
-					</form>
-				</div>
-			</aside>
-		
+
+		<aside>
+			<div id="addFestBlock" class="festival-form">
+				<form id="addFestForm" method="POST">
+					<h2 align="center">Adding a festival</h2>
+					<table>
+						<tr>
+							<td>Festival Name</td>
+							<td><input type="text" name="newFestName" id="newFestName" /></td>
+						</tr>
+						<tr>
+							<td>Place</td>
+							<td><input type="text" name="place" id="place" /></td>
+						</tr>
+						<tr>
+							<td>Date</td>
+							<td><input type="date" pattern="yyyy-MM-dd" name="date"
+								id="date" /></td>
+						</tr>
+						<tr>
+							<td>Seating</td>
+							<td><input type="text" name="seating" id="seating" /></td>
+						</tr>
+						<tr>
+							<td>Performers</td>
+							<td><select id="performerSelect" name="performerSelect"
+								multiple size="5">
+							</select></td>
+						</tr>
+					</table>
+					<br>
+					<button id="addFestBtn">Save Festival</button>
+				</form>
+			</div>
+		</aside>
+
 
 
 
