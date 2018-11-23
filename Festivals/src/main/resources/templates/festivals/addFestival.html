@@ -78,7 +78,7 @@ td span {
 			<tr>
 				<td>Performers</td>
 				<td><select th:field="*{performers}" multiple size="5">
-						<option th:each="perf : ${perfs}" th:value="${{perf}}"
+						<option th:each="perf : ${perfs}" th:value="${perf.performer_id}"
 							th:text="${perf.name}"></option>
 				</select></td>
 

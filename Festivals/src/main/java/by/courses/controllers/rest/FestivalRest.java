@@ -82,9 +82,18 @@ public class FestivalRest {
 
 	@RequestMapping(value = "/festivals/addfest", produces = "application/json", method = RequestMethod.POST)
 	public ResponseEntity<Festival> saveNewFestival(@RequestBody Festival fest) {
-		System.out.println("In method");
 		if (fest != null) {
 			service.saveNewFestival(fest);
+		}
+
+		return new ResponseEntity<Festival>(fest, HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "/festivals/{id}/change", produces = "application/json", method = RequestMethod.POST)
+	public ResponseEntity<Festival> changeFestival(@RequestBody Festival fest, @PathVariable() String id) {
+		System.out.println(fest);
+		if (fest != null) {
+			service.changeFestival(fest);
 		}
 
 		return new ResponseEntity<Festival>(fest, HttpStatus.OK);

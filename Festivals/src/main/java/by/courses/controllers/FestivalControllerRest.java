@@ -56,4 +56,10 @@ public class FestivalControllerRest {
 		return "redirect:/festivals";
 	}
 
+	@RequestMapping(value = "/{id}/delete")
+	public String deleteFestival(@PathVariable String id) {
+		service.deleteFestival(id);
+		return "redirect:/festivals";
+	}
+
 }

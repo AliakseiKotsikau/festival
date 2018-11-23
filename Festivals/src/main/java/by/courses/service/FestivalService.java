@@ -85,6 +85,9 @@ public class FestivalService {
 	}
 
 	public Festival saveNewFestival(Festival fest) {
+		if (festRepository.findByName(fest.getName()) != null) {
+			return null;
+		}
 		Festival saved = festRepository.save(fest);
 		java.util.Set<Performer> setFest = new HashSet<>(fest.getPerformers()); // to avoid ConcurrentExc
 
@@ -95,6 +98,15 @@ public class FestivalService {
 		}
 
 		return saved;
+	}
+
+	public Festival changeFestival(Festival fest) {
+		Festival changing = festRepository.findByName(fest.getName());
+		changing.setDate(fest.getDate());
+		changing.setPlace(fest.getPlace());
+		changing.setSeating(fest.getSeating());
+		festRepository.save(changing);
+		return changing;
 	}
 
 	public void deleteFestival(String festId) {

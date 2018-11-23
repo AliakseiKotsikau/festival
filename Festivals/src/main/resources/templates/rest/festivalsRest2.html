@@ -9,6 +9,7 @@
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	
 
 <style>
 .login-form {
@@ -47,13 +48,13 @@
 	float: right;
 }
 
-#festivalTable button {
-	width: 60px;
+ #festivalTable .btnShow  {
+	width: 50px;
 	height: 24px;
 	font-size: 12px;
 	margin: 1px;
 	color: red;
-}
+} 
 
 .info {
 	float: left;
@@ -66,6 +67,7 @@
 
 th, td {
 	padding: 10px;
+
 }
 
 select {
@@ -100,7 +102,23 @@ table {
 		document.getElementById('signup').style.visibility = 'hidden';
 		document.getElementById('addPerfBlock').style.display = 'none';  // from for adding performer
 		document.getElementById('addFestBlock').style.display = 'none';  // form for adding festival
+		document.getElementById('changeFestBlock').style.display = 'none';  // form for changing festival
 		document.getElementById('showPerfBlock').style.visibility = 'hidden';
+		
+		document.getElementById("showAddFestBlock").onclick = function() { // button for show festival block
+			document.getElementById("info").style.display = "none";
+			document.getElementById("changeFestBlock").style.display = "none";
+			document.getElementById("addFestBlock").style.display = "inline";
+			
+		
+			//shows list of all performers
+			$.getJSON("/data/perfs", function (result) {
+	            $.each(result, function (i, perf) {
+	                $("#performerSelect").append("<option value=" + perf.performer_id + ">" + perf.name + "</option>");
+	            });
+	        });
+		
+		};
 
 		
 		//creates table of festivals
@@ -122,48 +140,56 @@ table {
 				tr.appendChild(td = document.createElement("td"));
 				td.innerHTML = item.place;
 				tr.appendChild(td = document.createElement("td"));
-				td.innerHTML = item.seating;
-				tr.appendChild(td = document.createElement("td"));
+				td.innerHTML = (item.seating - item.participants.length) + "/" + item.seating;
+				 tr.appendChild(td = document.createElement("td"));
 				
 				//buttons for single festivals (show list of performers)
+				
 				var btn = document.createElement('button');
 				btn.type = "button";
-				btn.className = "btn";
+				btn.className = "btnShow";
 				btn.innerHTML = "Show";
 				btn.onclick = function() {
 						showList(item.id);   
 					};
 				td.appendChild(btn);
 				
+				tr.appendChild(td = document.createElement("td"));
 
 				
+				
 				//deletes chosen festival
+				
 				var btn = document.createElement('button');
 				btn.type = "button";
 				btn.id = "deletefest" + i;
 				btn.style = "visibility:hidden;";
 				btn.className = "btn";
-				btn.innerHTML = "Delete";
+				btn.innerHTML = "D";
 				btn.onclick = function() {
 					location.href="/festivals/" + item.id + "/delete";
 					};
 				td.appendChild(btn);
 				
-				//deletes chosen festival
+				
+				//changes chosen festival
+				
 				var btn = document.createElement('button');
 				btn.type = "button";
 				btn.id = "changefest" + i;
 				btn.style = "visibility:hidden;";
 				btn.className = "btn";
-				btn.innerHTML = "Change";
-				btn.onclick = function() {
+				btn.innerHTML = "C";
+				btn.onclick = function() {					
 					changeFestival(item.id);
 					};
 				td.appendChild(btn);
 				
-				findAction("change", "changefest" + i)
+				findAction("change", "changefest" + i);
 				findAction("delete", "deletefest" + i);
+				
 				i++;
+				
 				
 				
 
@@ -226,10 +252,6 @@ table {
 
 	}
 	
-	function changeFestival(id) {
-		
-	}
-	
 	
 	// Sets onclick functions of buttons
 	
@@ -252,22 +274,59 @@ table {
 			document.getElementById("addPerfBlock").style.display = "block";
 		};
 		
-		document.getElementById("showAddFestBlock").onclick = function() { // button for show festival block
-			document.getElementById("info").style.display = "none";
-			document.getElementById("addFestBlock").style.display = "block";
-			
-		
-			//shows list of all performers
-			$.getJSON("/data/perfs", function (result) {
-	            $.each(result, function (i, perf) {
-	                $("#performerSelect").append("<option value=" + perf.performer_id + ">" + perf.name + "</option>");
-	            });
-	        });
-		
-		};
 		
 		
 	}
+	
+	
+	// change festival info
+	
+	function changeFestival(id) {
+		
+		document.getElementById('addFestBlock').style.display = 'none';
+		document.getElementById('info').style.display = 'none';
+		document.getElementById('changeFestBlock').style.display = 'inline';
+		
+		var fest = "/data/festivals/" + id;
+		$.getJSON(fest, function(data) {
+			document.getElementById("changeFestName").value = data.name;
+	         document.getElementById('changePlace').value = data.place;
+	         var formatted = $.datepicker.formatDate("yy-mm-dd", new Date(
+						data.date));
+	         document.getElementById('changeDate').value = formatted;
+	         document.getElementById('changeSeating').value = data.seating;
+		});
+		
+		document.getElementById("changeFestBtn").onclick = function() { // saves changes in festival
+			saveChanges(id);
+		};
+		
+	}
+		
+	function saveChanges(id) {
+		
+		const url = "data/festivals/" + id + "/change";
+			
+		fetch(url, {
+		    method : "POST",
+		    headers: {
+	            "Content-Type": "application/json; charset=utf-8",
+	        },
+		    body : JSON.stringify({
+		         name : document.getElementById('changeFestName').value,
+		         place : document.getElementById('changePlace').value,
+		         date: document.getElementById('changeDate').value,
+		         seating: document.getElementById('changeSeating').value,
+
+
+		    })
+		}).then(
+		    response => response.json() 
+		).then(
+		    html => console.log(html)
+		);
+	}
+	
 	
 	/* Adds performer to chosen festival */
 	
@@ -423,8 +482,6 @@ table {
 				<button id="showAddFestBlock">Add festival</button>
 			</div>
 
-			<!-- Adding festival block -->
-
 
 			<!-- Festival info and add performer form -->
 
@@ -502,9 +559,37 @@ table {
 				</form>
 			</div>
 		</aside>
-
-
-
+		
+		<!-- Block for change festival info -->
+		
+		<aside>
+			<div id="changeFestBlock" class="festival-form">
+				<form id="changeFestForm" method="POST">
+					<h2 align="center">Changing a festival</h2>
+					<table>
+						<tr>
+							<td>Festival Name</td>
+							<td><input type="text" name="newFestName" id="changeFestName" readonly/></td>
+						</tr>
+						<tr>
+							<td>Place</td>
+							<td><input type="text" name="place" id="changePlace" /></td>
+						</tr>
+						<tr>
+							<td>Date</td>
+							<td><input type="date" pattern="yyyy-MM-dd" name="date"
+								id="changeDate" /></td>
+						</tr>
+						<tr>
+							<td>Seating</td>
+							<td><input type="text" name="seating" id="changeSeating" /></td>
+						</tr>
+					</table>
+					<br>
+					<button id="changeFestBtn">Save changes</button>
+				</form>
+			</div>
+		</aside>
 
 
 	</article>
