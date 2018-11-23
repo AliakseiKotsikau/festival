@@ -85,6 +85,9 @@ public class FestivalService {
 	}
 
 	public Festival saveNewFestival(Festival fest) {
+		if (validateFestival(fest)) { // validate new festival info
+			return null;
+		}
 		if (festRepository.findByName(fest.getName()) != null) {
 			return null;
 		}
@@ -131,6 +134,20 @@ public class FestivalService {
 		perf.getFestivals_perf().remove(fest);
 		performerRepository.save(perf);
 		festRepository.save(fest);
+	}
+
+	private boolean validateFestival(Festival fest) {
+		if (fest.getName() == null || fest.getName().isBlank()) {
+			return false;
+		} else if (fest.getDate() == null) {
+			return false;
+		} else if (fest.getSeating() == null) {
+			return false;
+		} else if (fest.getPlace() == null || fest.getPlace().isBlank()) {
+			return false;
+		}
+
+		return true;
 	}
 
 }
