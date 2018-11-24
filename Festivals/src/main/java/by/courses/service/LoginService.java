@@ -33,8 +33,11 @@ public class LoginService {
 	}
 
 	public String getUserInfo() {
+		// checks for logged user
 		if (SecurityContextHolder.getContext().getAuthentication().isAuthenticated()) {
 			Object obj = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+			// returns user name and roles
 			if (obj instanceof UserDetails) {
 				UserDetails userdetails = (UserDetails) obj;
 				Login login = loginRepository.findByUsername(userdetails.getUsername());
@@ -43,10 +46,11 @@ public class LoginService {
 				return greeting;
 			} else
 				return obj.toString();
+
 		}
 
 		else
-			return "Hello. It's Festival app. Please login.";
+			return null;
 	}
 
 	public Set<Role> getCurentUserRoles() {
